@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "circomlib": "^2.0.5",
     "snarkjs": "^0.7.6"
   },
   "description": ""
