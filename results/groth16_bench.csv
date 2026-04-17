@@ -3,3 +3,7 @@ timestamp,circuit,metric,n,mean_ms,std_ms,median_ms,min_ms,max_ms
 2026-04-17T12:45:54.512Z,multiplier,verify,10,11.436,1.138,11.708,9.816,13.405
 2026-04-17T17:55:38.294Z,multiplier,prove_fullprove,10,47.733,3.668,47.168,42.328,52.598
 2026-04-17T17:55:38.294Z,multiplier,verify,10,10.274,0.698,10.646,9.242,11.088
+2026-04-17T18:17:33.695Z,multiplier,prove_fullprove,10,43.821,4.239,42.285,41.218,55.143
+2026-04-17T18:17:33.695Z,multiplier,verify,10,9.707,0.422,9.641,9.190,10.495
+2026-04-17T18:26:23.240Z,multiplier,prove_fullprove,50,51.510,6.502,50.181,43.030,70.288
+2026-04-17T18:26:23.240Z,multiplier,verify,50,12.212,1.891,12.328,9.104,18.200
