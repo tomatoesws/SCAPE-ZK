@@ -1,0 +1,5 @@
+timestamp,circuit,metric,n,mean_ms,std_ms,median_ms,min_ms,max_ms
+2026-04-17T12:45:54.512Z,multiplier,prove_fullprove,10,50.359,5.347,49.340,43.766,63.055
+2026-04-17T12:45:54.512Z,multiplier,verify,10,11.436,1.138,11.708,9.816,13.405
+2026-04-17T17:55:38.294Z,multiplier,prove_fullprove,10,47.733,3.668,47.168,42.328,52.598
+2026-04-17T17:55:38.294Z,multiplier,verify,10,10.274,0.698,10.646,9.242,11.088

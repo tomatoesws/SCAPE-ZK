@@ -1,0 +1,10 @@
+ptau/
+keys/*.zkey
+proofs/
+logs/
+results/raw/
+__pycache__/
+*.pyc
+node_modules/
+target/
+.venv/
