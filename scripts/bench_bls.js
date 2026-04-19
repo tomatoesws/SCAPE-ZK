@@ -1,6 +1,3 @@
-// SCAPE-ZK Phase 3 — BLS Aggregate Signature Benchmark v3
-// Decomposes verify_agg to show the TRUE O(1) on-chain pairing cost
-
 const { bls12_381 } = require("@noble/curves/bls12-381.js");
 const blsl = bls12_381.longSignatures;
 const fs = require("fs");
@@ -28,7 +25,7 @@ function stats(arr) {
 }
 
 function fmt(s) {
-    return `mean=${s.mean.toFixed(3)}ms  std=${s.std.toFixed(3)}ms  median=${s.median.toFixed(3)}ms`;
+    return `mean=${s.mean.toFixed(3)}ms  std=${s.std.toFixed(3)}ms`;
 }
 
 async function timeRun(fn, runs, warmup) {
@@ -43,93 +40,58 @@ async function timeRun(fn, runs, warmup) {
 }
 
 async function benchBatchSize(n) {
-    console.error(`\n=== Batch size n = ${n} ===`);
     const { secretKey, publicKey } = blsl.keygen();
-
-    const messages = [];
-    const hashed = [];
+    const messages = [], hashed = [];
     for (let i = 0; i < n; i++) {
         const buf = Buffer.alloc(40);
-        buf.writeUInt32BE(0x53435045, 0);
-        buf.writeUInt32BE(i, 4);
+        buf.writeUInt32BE(0x53435045, 0); buf.writeUInt32BE(i, 4);
         crypto.randomFillSync(buf, 8, 32);
-        const m = new Uint8Array(buf);
-        messages.push(m);
-        hashed.push(blsl.hash(m));
+        messages.push(new Uint8Array(buf)); hashed.push(blsl.hash(new Uint8Array(buf)));
     }
 
     const signStats = await timeRun(async () => blsl.sign(hashed[0], secretKey), RUNS_PER_OP, WARMUP);
-    console.error(`sign:           ${fmt(signStats)}`);
-
     const sigs = hashed.map(h => blsl.sign(h, secretKey));
     const aggStats = await timeRun(async () => blsl.aggregateSignatures(sigs), RUNS_PER_OP, WARMUP);
-    console.error(`aggregate:      ${fmt(aggStats)}`);
-
     const aggSig = blsl.aggregateSignatures(sigs);
 
-    // PAIRING-ONLY (Table V On-chain Cost)
     const G1Generator = bls12_381.G1.Point.BASE;
     let Q_agg = hashed[0];
-    for (let i = 1; i < n; i++) {
-        Q_agg = Q_agg.add(hashed[i]);
-    }
+    for (let i = 1; i < n; i++) Q_agg = Q_agg.add(hashed[i]);
 
-    const pairingOnlyStats = await timeRun(
-        async () => {
-            const lhs = bls12_381.pairing(G1Generator, aggSig);
-            const rhs = bls12_381.pairing(publicKey, Q_agg);
-            // Hack for @noble/curves Fp12 object equality
-            if (String(lhs) !== String(rhs)) throw new Error("pairing check failed");
-        },
-        RUNS_PER_OP, WARMUP
-    );
-    console.error(`pairing_only:   ${fmt(pairingOnlyStats)}  <-- ON-CHAIN O(1) Cost`);
+    const pairingOnlyStats = await timeRun(async () => {
+        const lhs = bls12_381.pairing(G1Generator, aggSig);
+        const rhs = bls12_381.pairing(publicKey, Q_agg);
+        if (String(lhs) !== String(rhs)) throw new Error("pairing fail");
+    }, RUNS_PER_OP, WARMUP);
 
     const inputs = hashed.map(h => ({ message: h, publicKey }));
     const verifyAggStats = await timeRun(async () => blsl.verifyBatch(aggSig, inputs), RUNS_PER_OP, WARMUP);
-    console.error(`verify_agg:     ${fmt(verifyAggStats)}  <-- includes O(n) preprocessing`);
 
     const naiveRuns = Math.max(5, Math.floor(RUNS_PER_OP / Math.max(1, Math.log10(n) * 3)));
-    const verifyNaiveStats = await timeRun(
-        async () => {
-            for (let i = 0; i < n; i++) blsl.verify(sigs[i], hashed[i], publicKey);
-        },
-        naiveRuns, WARMUP
-    );
-    console.error(`verify_naive:   ${fmt(verifyNaiveStats)}  <-- O(n) baseline`);
+    const verifyNaiveStats = await timeRun(async () => {
+        for (let i = 0; i < n; i++) blsl.verify(sigs[i], hashed[i], publicKey);
+    }, naiveRuns, WARMUP);
 
-    return { n, pairing_only: pairingOnlyStats, verify_agg: verifyAggStats, verify_naive: verifyNaiveStats };
+    return { n, sign: signStats, aggregate: aggStats, pairing_only: pairingOnlyStats, verify_agg: verifyAggStats, verify_naive: verifyNaiveStats };
 }
 
 (async () => {
-    console.error("SCAPE-ZK BLS Aggregate Signature Benchmark v3");
-    
-    // Sanity check
-    const { secretKey, publicKey } = blsl.keygen();
-    const m = blsl.hash(new TextEncoder().encode("sanity"));
-    const s = blsl.sign(m, secretKey);
-    if (!blsl.verify(s, m, publicKey)) throw new Error("sanity failed");
-
+    console.error("Generating fresh BLS Data and saving to CSV...");
     const results = [];
-    for (const n of BATCH_SIZES) {
-        results.push(await benchBatchSize(n));
-    }
+    for (const n of BATCH_SIZES) results.push(await benchBatchSize(n));
 
-    console.error("\n" + "=".repeat(85));
-    console.error("KEY TABLE — pairing_only is the TRUE on-chain cost (should be flat)");
-    console.error("=".repeat(85));
-    console.error("batch  | pairing_only | verify_agg | verify_naive | naive/pairing | naive/verify_agg");
-    console.error("-".repeat(85));
+    const resultsDir = path.join(ROOT, "results");
+    if (!fs.existsSync(resultsDir)) fs.mkdirSync(resultsDir, { recursive: true });
+    const csvPath = path.join(resultsDir, "bls_bench.csv");
+    
+    let rows = "timestamp,batch_size,operation,n_runs,mean_ms,std_ms,median_ms,min_ms,max_ms\n";
+    const ts = new Date().toISOString();
     for (const r of results) {
-        const sp1 = r.verify_naive.mean / r.pairing_only.mean;
-        const sp2 = r.verify_naive.mean / r.verify_agg.mean;
-        console.error(
-            `${String(r.n).padStart(5)}  | ` +
-            `${r.pairing_only.mean.toFixed(2).padStart(11)} | ` +
-            `${r.verify_agg.mean.toFixed(2).padStart(10)} | ` +
-            `${r.verify_naive.mean.toFixed(2).padStart(12)} | ` +
-            `${sp1.toFixed(1).padStart(12)}x | ` +
-            `${sp2.toFixed(1).padStart(15)}x`
-        );
+        for (const op of ["sign", "aggregate", "pairing_only", "verify_agg", "verify_naive"]) {
+            const s = r[op];
+            rows += `${ts},${r.n},${op},${s.n},${s.mean.toFixed(4)},${s.std.toFixed(4)},${s.median.toFixed(4)},${s.min.toFixed(4)},${s.max.toFixed(4)}\n`;
+        }
     }
+    fs.writeFileSync(csvPath, rows);
+    console.error("CSV Saved successfully!");
 })();
