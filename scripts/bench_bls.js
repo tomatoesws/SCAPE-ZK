@@ -67,7 +67,7 @@ async function benchBatchSize(n) {
     const inputs = hashed.map(h => ({ message: h, publicKey }));
     const verifyAggStats = await timeRun(async () => blsl.verifyBatch(aggSig, inputs), RUNS_PER_OP, WARMUP);
 
-    const naiveRuns = Math.max(5, Math.floor(RUNS_PER_OP / Math.max(1, Math.log10(n) * 3)));
+    const naiveRuns = Math.max(10, Math.floor(RUNS_PER_OP / Math.max(1, Math.log10(n) * 3)));
     const verifyNaiveStats = await timeRun(async () => {
         for (let i = 0; i < n; i++) blsl.verify(sigs[i], hashed[i], publicKey);
     }, naiveRuns, WARMUP);
