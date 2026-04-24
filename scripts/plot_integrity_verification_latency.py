@@ -53,7 +53,6 @@ def main() -> None:
         "axes.titlesize": 16,
         "legend.fontsize": 9,
         "figure.dpi": 200,
-        "savefig.bbox": "tight",
     })
 
     fig, ax = plt.subplots(figsize=(8.8, 5.2))
@@ -64,15 +63,16 @@ def main() -> None:
     ax.plot(x, scape_y, color="#ff7f0e", marker="D", linewidth=2.2, markersize=6.8,
             markeredgecolor="black", markeredgewidth=0.6, label="SCAPE-ZK (Ours)")
 
-    for xs, ys, color in [(x, xauth_y, "#e41a1c"), (x, ssl_y, "#1f77b4"), (x, scape_y, "#ff7f0e")]:
-        for xi, yi in zip(xs, ys):
-            ax.annotate(f"{yi:.3f}", (xi, yi), textcoords="offset points", xytext=(0, 8),
-                        ha="center", fontsize=8.0, color=color)
-
     ax.set_title("Integrity Verification Latency", fontweight="bold", pad=14)
     ax.set_xlabel("EHR File Size (MB)")
     ax.set_ylabel("Integrity Verification Time (ms)")
     ax.set_xticks(x)
+    ax.set_xlim(min(x) - 3, max(x) + 3)
+    y_max = max(max(xauth_y), max(ssl_y), max(scape_y))
+    # Add visible space below the near-zero SCAPE-ZK line so it does not sit
+    # directly on the bottom axis when plotted against much larger baselines.
+    lower_pad = max(2.0, y_max * 0.04)
+    ax.set_ylim(-lower_pad, y_max * 1.08)
     ax.grid(True, alpha=0.28)
 
     legend = ax.legend(loc="upper left", bbox_to_anchor=(1.02, 1.0), frameon=True,
@@ -81,8 +81,9 @@ def main() -> None:
     legend.get_frame().set_edgecolor("#cfcfcf")
     legend.get_frame().set_linewidth(0.8)
 
-    fig.savefig(OUT / "integrity_verification_latency.png")
-    fig.savefig(OUT / "integrity_verification_latency.pdf")
+    fig.subplots_adjust(left=0.14, right=0.80, top=0.88, bottom=0.16)
+    fig.savefig(OUT / "integrity_verification_latency.png", bbox_inches=None)
+    fig.savefig(OUT / "integrity_verification_latency.pdf", bbox_inches=None)
     plt.close(fig)
 
     print(f"Saved {OUT / 'integrity_verification_latency.png'}")

@@ -67,11 +67,10 @@ system. This wording is important for reviewer-facing accuracy.
 The key commands used in the current evaluation workspace are:
 
 ```bash
-npm run baseline:check
+npm run gen:inputs
 npm run bench:primitives
-python3 baseline_sim.py --show-primitives
-./.venv/bin/python scripts/build_modeled_table4_comparison.py
-./.venv/bin/python scripts/plot_table4_computation_cost.py
-MPLCONFIGDIR=/tmp/matplotlib ./.venv/bin/python scripts/plot_table4_linegraphs.py
-MPLCONFIGDIR=/tmp/matplotlib ./.venv/bin/python scripts/plot_matched_parameter_figures.py
+MPLCONFIGDIR=/tmp/matplotlib ./.venv/bin/python scripts/plot_off_chain_authorization_preparation_cost.py --all-baselines --n-max 200
+MPLCONFIGDIR=/tmp/matplotlib ./.venv/bin/python scripts/plot_proof_verification_comparison.py
+MPLCONFIGDIR=/tmp/matplotlib ./.venv/bin/python scripts/plot_integrity_verification_latency.py
+MPLCONFIGDIR=/tmp/matplotlib ./.venv/bin/python scripts/plot_encryption_and_delegation_latency.py
 ```

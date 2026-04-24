@@ -1,25 +1,25 @@
 """
-Plot aggregate proof-generation time.
+Plot off-chain authorization preparation cost.
 
 Supports either:
   1. a single-baseline comparison, or
-  2. a combined transparency chart with all modeled baselines.
+  2. a combined chart with all modeled baselines.
 
 This script is intentionally strict:
-  - T_init is read from the repo's generated summary CSV.
+  - T_init is derived from the repo's measured Groth16 benchmark CSV.
   - baseline costs come from repo-known modeled anchors or a user-supplied value.
   - T_agg_overhead comes from either explicit input or a measured BLS aggregate fit.
 
 Examples:
-  ./.venv/bin/python scripts/plot_aggregate_proof_generation.py \
+  ./.venv/bin/python scripts/plot_off_chain_authorization_preparation_cost.py \
       --baseline scheme30 \
       --t-agg-source bls-aggregate-fit
 
-  ./.venv/bin/python scripts/plot_aggregate_proof_generation.py \
+  ./.venv/bin/python scripts/plot_off_chain_authorization_preparation_cost.py \
       --all-baselines \
       --t-agg-source bls-aggregate-fit \
       --n-max 150 \
-      --out-prefix aggregate_proof_generation_all
+      --out-prefix off_chain_authorization_preparation_cost
 """
 
 from __future__ import annotations
@@ -42,6 +42,7 @@ FIGS.mkdir(parents=True, exist_ok=True)
 
 SUMMARY_CSV = RESULTS / "cumulative_proof_modeled_summary.csv"
 BLS_CSV = RESULTS / "bls_bench.csv"
+GROTH16_CSV = RESULTS / "groth16_bench.csv"
 
 KNOWN_BASELINES = {
     "scheme30": ("Scheme [30]", 20.690194),
@@ -80,7 +81,7 @@ def parse_args() -> argparse.Namespace:
         "--t-agg-overhead-ms",
         type=float,
         default=None,
-        help="Exact measured aggregate overhead per added item. Do not guess this.",
+        help="Exact measured preparation overhead per added item. Do not guess this.",
     )
     parser.add_argument(
         "--t-agg-source",
@@ -96,18 +97,27 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--out-prefix",
-        default="aggregate_proof_generation",
+        default="off_chain_authorization_preparation_cost",
         help="Output filename prefix under results/figures and results/.",
     )
     return parser.parse_args()
 
 
-def load_t_init_ms() -> float:
-    df = pd.read_csv(SUMMARY_CSV)
-    rows = df[(df["scheme"] == "SCAPE-ZK") & (df["role"] == "first_request_total")]
+def latest_value(df: pd.DataFrame, filters: dict[str, object], value_col: str = "mean_ms") -> float:
+    rows = df.copy()
+    for col, val in filters.items():
+        rows = rows[rows[col] == val]
     if rows.empty:
-        raise ValueError(f"Could not find SCAPE-ZK first_request_total in {SUMMARY_CSV}")
-    return float(rows.iloc[0]["value_ms"])
+        raise ValueError(f"Missing data for {filters}")
+    rows = rows.assign(_ts=pd.to_datetime(rows["timestamp"], utc=True)).sort_values("_ts")
+    return float(rows.iloc[-1][value_col])
+
+
+def load_t_init_ms() -> float:
+    groth = pd.read_csv(GROTH16_CSV)
+    t_session = latest_value(groth, {"circuit": "session", "metric": "prove_fullprove"})
+    t_request = latest_value(groth, {"circuit": "request", "metric": "prove_fullprove"})
+    return t_session + t_request
 
 
 def get_baseline(args: argparse.Namespace) -> tuple[str, float]:
@@ -196,7 +206,7 @@ def main() -> None:
 
     table_dict = {
         "batch_size": x,
-        "scape_aggregate_proof_ms": scape_y,
+        "scape_off_chain_authorization_preparation_ms": scape_y,
     }
     for name, cost, _color in baseline_specs:
         safe = (
@@ -206,7 +216,7 @@ def main() -> None:
             .replace("]", "")
             .replace("-", "_")
         )
-        table_dict[f"{safe}_proof_ms"] = cost * x
+        table_dict[f"{safe}_preparation_ms"] = cost * x
     table = pd.DataFrame(table_dict)
     table_path = RESULTS / f"{args.out_prefix}_table.csv"
     table.to_csv(table_path, index=False)
@@ -215,7 +225,7 @@ def main() -> None:
         {
             "parameter": "T_init_ms",
             "value": round(t_init_ms, 6),
-            "source": "results/cumulative_proof_modeled_summary.csv",
+            "source": "derived: latest(session prove_fullprove) + latest(request prove_fullprove) from results/groth16_bench.csv",
         },
         {
             "parameter": "T_agg_overhead_ms",
@@ -290,51 +300,13 @@ def main() -> None:
             markevery=pick_marker_indices(args.n_max),
         )
 
-        for n in pick_label_points(args.n_max):
-            yv = cost * n
-            ax.annotate(
-                f"{yv:.3f}",
-                (n, yv),
-                textcoords="offset points",
-                xytext=(0, 8),
-                ha="center",
-                fontsize=8.2,
-                color=color,
-            )
-
-    for n in pick_label_points(args.n_max):
-        yv = t_init_ms + (t_agg_ms * n)
-        ax.annotate(
-            f"{yv:.3f}",
-            (n, yv),
-            textcoords="offset points",
-            xytext=(0, 8),
-            ha="center",
-            fontsize=8.2,
-            color=scape_style["color"],
-        )
-
-    highlighted = []
-    for name in ("Scheme [30]", "SSL-XIoMT [8]"):
-        if name not in crossings or crossings[name] is None:
-            continue
-        cross_n = crossings[name]
-        cross_y = scape_y[cross_n - 1]
-        highlighted.append((name, cross_n, cross_y))
-        ax.scatter([cross_n], [cross_y], color="black", s=34, zorder=6)
-        ax.annotate(
-            f"{cross_n}",
-            xy=(cross_n, cross_y),
-            xytext=(cross_n + 4, cross_y * (1.18 if name == "Scheme [30]" else 0.82)),
-            fontsize=9,
-            color="black",
-        )
     ax.set_title("Off-chain Authorization Preparation Cost", fontweight="bold", pad=14)
     ax.set_xlabel("Workload (Number of Requests)")
     ax.set_ylabel("Preparation Time (ms)")
-    ax.set_xlim(1, x[-1])
+    ax.set_xlim(-5, x[-1] + 5)
     if args.all_baselines:
         ax.set_yscale("log")
+        ax.set_ylim(5, max(all_y_max * 2.2, 20))
         ax.yaxis.set_major_formatter(FuncFormatter(lambda y, _pos: f"{int(y):d}" if y >= 1 else f"{y:g}"))
     ax.set_xticks([1, 10, 20, 50, 100, 150, 200] if args.n_max >= 200 else pick_label_points(args.n_max))
     ax.grid(True, which="both", alpha=0.28)

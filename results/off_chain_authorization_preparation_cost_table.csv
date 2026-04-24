@@ -1,4 +1,4 @@
-batch_size,scape_aggregate_proof_ms,xauth_6_proof_ms,ssl_xiomt_proof_ms,scheme_30_proof_ms
+batch_size,scape_off_chain_authorization_preparation_ms,xauth_6_preparation_ms,ssl_xiomt_8_preparation_ms,scheme_30_preparation_ms
 1,752.750321144976,89700.0,6.94,20.690194
 2,752.7746422899521,179400.0,13.88,41.380388
 3,752.798963434928,269100.0,20.82,62.070582

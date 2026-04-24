@@ -8,7 +8,6 @@
       "current_mode": "paper_modeled",
       "repo_status": "no faithful protocol implementation yet",
       "evidence_in_repo": [
-        "baseline_sim.py",
         "Day1_Baseline_Cost_Formulas.md",
         "results/parameter_alignment.md"
       ],
@@ -30,7 +29,6 @@
       "current_mode": "paper_modeled",
       "repo_status": "no faithful protocol implementation yet",
       "evidence_in_repo": [
-        "baseline_sim.py",
         "Day1_Baseline_Cost_Formulas.md",
         "results/parameter_alignment.md"
       ],
@@ -52,9 +50,7 @@
       "current_mode": "paper_modeled",
       "repo_status": "citation mapping needs confirmation before implementation",
       "evidence_in_repo": [
-        "baseline_sim.py",
-        "results/parameter_alignment.md",
-        "results/table4_computation_cost_summary.csv"
+        "results/parameter_alignment.md"
       ],
       "required_to_be_real": [
         "confirm the exact bibliographic source used as [30] in the comparison",

@@ -1,12 +1,4 @@
 figure,scheme,x_value,x_unit,latency_ms,basis,notes
-encryption_latency,SCAPE-ZK,5,attributes,13.0917,measured_cpabe_csv,Local benchmark from cpabe_bench.csv: sym_encrypt_1KB + cpabe_encrypt.
-encryption_latency,SCAPE-ZK,10,attributes,25.1528,measured_cpabe_csv,Local benchmark from cpabe_bench.csv: sym_encrypt_1KB + cpabe_encrypt.
-encryption_latency,SCAPE-ZK,20,attributes,48.5452,measured_cpabe_csv,Local benchmark from cpabe_bench.csv: sym_encrypt_1KB + cpabe_encrypt.
-encryption_latency,SCAPE-ZK,50,attributes,117.5712,measured_cpabe_csv,Local benchmark from cpabe_bench.csv: sym_encrypt_1KB + cpabe_encrypt.
-encryption_latency,SSL-XIoMT [8],5,attributes,34.947978,primitive_calibrated_model,baseline_sim.py formula instantiated with local primitive timings for the SSL-XIoMT encryption path.
-encryption_latency,SSL-XIoMT [8],10,attributes,39.527593,primitive_calibrated_model,baseline_sim.py formula instantiated with local primitive timings for the SSL-XIoMT encryption path.
-encryption_latency,SSL-XIoMT [8],20,attributes,48.686823,primitive_calibrated_model,baseline_sim.py formula instantiated with local primitive timings for the SSL-XIoMT encryption path.
-encryption_latency,SSL-XIoMT [8],50,attributes,76.164513,primitive_calibrated_model,baseline_sim.py formula instantiated with local primitive timings for the SSL-XIoMT encryption path.
 delegation_latency,SCAPE-ZK,1,MB,0.6134,measured_pre_csv,"Hybrid PRE transforms only CT_k, so latency is payload-size independent; constant uses latest measured re_encrypt mean."
 delegation_latency,SCAPE-ZK,2,MB,0.6134,measured_pre_csv,"Hybrid PRE transforms only CT_k, so latency is payload-size independent; constant uses latest measured re_encrypt mean."
 delegation_latency,SCAPE-ZK,3,MB,0.6134,measured_pre_csv,"Hybrid PRE transforms only CT_k, so latency is payload-size independent; constant uses latest measured re_encrypt mean."

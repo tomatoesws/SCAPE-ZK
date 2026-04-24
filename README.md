@@ -1,71 +1,207 @@
 # SCAPE-ZK
 
-This repository currently contains the baseline evaluation toolkit for the
-SCAPE-ZK prototype: Circom circuits, proving artifacts, benchmark scripts, and
-paper-alignment simulators.
+SCAPE-ZK is a research prototype and evaluation workspace for a privacy-
+preserving healthcare data-sharing design built with Circom, Groth16, and
+supporting benchmark scripts. This repository contains:
 
-## Current Status
+- Circom circuits and proving artifacts for the SCAPE-ZK flow
+- benchmark scripts for local measurements
+- plotting scripts used for the report figures
+- generated CSV and figure outputs under [results](/home/tomato/scape-zk/results)
 
-The cryptographic toolchain is usable for baseline experiments:
+This README is written so another student, lecturer, or evaluator can install,
+run, and test the project without needing extra context.
 
-- Node.js dependencies are installed for `snarkjs`, `circomlib`, and `circomlibjs`
-- `circom` and `snarkjs` are available locally
-- sample inputs can be generated
-- the session and request circuits can complete witness, proof, and verify flows
-- the paper baseline simulator passes its published-point validation checks
+## Repository Structure
 
-What is not here yet is a full application/service layer. This repo is still a
-research and evaluation workspace, now with a repeatable readiness check.
+- [circuits](/home/tomato/scape-zk/circuits): Circom circuits, generated WASM, and witness helpers
+- [keys](/home/tomato/scape-zk/keys): proving and verification keys
+- [scripts](/home/tomato/scape-zk/scripts): benchmark, plotting, and artifact-generation scripts
+- [tools](/home/tomato/scape-zk/tools): reproducibility and readiness checks
+- [results](/home/tomato/scape-zk/results): generated tables, CSV files, and figures
+- [baselines](/home/tomato/scape-zk/baselines): notes about baseline reproduction status
+- [docs](/home/tomato/scape-zk/docs): experiment setup and supporting writeups
 
-## Quick Start
+## What This Project Runs
 
-Run the full readiness check:
+The repository supports three main tasks:
+
+1. Generate SCAPE-ZK sample inputs for the Circom circuits.
+2. Run local benchmark and plotting scripts for the report figures.
+3. Verify that the checked-in proving artifacts can complete witness
+   generation, proof generation, and proof verification end to end.
+
+This is not a full web application. It is an experiment and evaluation codebase.
+
+## Prerequisites
+
+Install these tools before running the project:
+
+- `Node.js` 18+ and `npm`
+- `Python` 3.10+ with `pip` and `venv`
+- `circom`
+- `snarkjs`
+
+The repository already includes generated circuit artifacts such as:
+
+- `circuits/session_js/session.wasm`
+- `circuits/request_js/request.wasm`
+- `keys/session_final.zkey`
+- `keys/request_final.zkey`
+
+So you do not need to rebuild the trusted setup to run the main checks.
+
+## Installation
+
+### 1. Clone the repository
 
 ```bash
-npm run baseline:check
+git clone <your-repository-url>
+cd scape-zk
 ```
 
-Run the individual pieces:
+### 2. Install Node.js dependencies
+
+```bash
+npm install
+```
+
+This installs the JavaScript dependencies used by the circuit input generator
+and `snarkjs`-based workflow.
+
+### 3. Create a Python virtual environment
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+### 4. Install Python plotting/data packages
+
+```bash
+pip install matplotlib numpy pandas
+```
+
+These packages are needed for the comparison and plotting scripts.
+
+### 5. Install `circom` and make sure `snarkjs` is on `PATH`
+
+Verify the required CLI tools:
+
+```bash
+node -v
+python3 --version
+circom --version
+snarkjs --help
+```
+
+If `snarkjs` is not globally available, you can use the local copy via:
+
+```bash
+npx snarkjs --help
+```
+
+If your environment does not expose the local binary automatically, add:
+
+```bash
+export PATH="$PWD/node_modules/.bin:$PATH"
+```
+
+## How To Run The Project
+
+### Option A: Run the main components separately
+
+Generate fresh circuit inputs:
 
 ```bash
 npm run gen:inputs
-npm run sim:baseline
+```
+
+Run primitive micro-benchmarks:
+
+```bash
 npm run bench:primitives
 ```
 
-Regenerate the primitive-calibrated comparison artifacts:
+### Option B: Regenerate report figures
+
+Activate the Python virtual environment first, then run:
 
 ```bash
 npm run compare:artifacts
 ```
 
-## What `baseline:check` Verifies
+This regenerates the active figure outputs and supporting CSV tables inside
+[results](/home/tomato/scape-zk/results) and
+[results/figures](/home/tomato/scape-zk/results/figures).
 
-- required binaries are on `PATH`: `node`, `python3`, `circom`, `snarkjs`
-- required proving artifacts exist
-- `scripts/gen_inputs.js` produces consistent circuit inputs
-- `baseline_sim.py` passes all baseline validation checks
-- the session circuit completes witness generation, Groth16 proving, and verification
-- the request circuit completes witness generation, Groth16 proving, and verification
+## How To Test The Program
 
-## Comparison Methodology
+For a quick local smoke test, run:
 
-This repository now separates:
+```bash
+npm test
+```
 
-- `measured SCAPE-ZK results`: direct local benchmark outputs
-- `paper-anchored baseline values`: headline numbers preserved from source papers
-- `primitive-calibrated baseline proxies`: formulas instantiated with the local
-  primitive micro-benchmarks in [results/primitive_microbench.csv](/home/tomato/scape-zk/results/primitive_microbench.csv:1)
+This command regenerates the sample circuit inputs.
 
-That means the current baseline comparison is best described as
-`paper-anchored and primitive-calibrated`, not as a full reimplementation of
-all compared schemes.
+For figure generation, run:
 
-The main outputs for the paper are:
+```bash
+npm run compare:artifacts
+```
 
-- [results/table4_modeled_comparison.csv](/home/tomato/scape-zk/results/table4_modeled_comparison.csv:1)
-- [results/table4_computation_cost_summary.csv](/home/tomato/scape-zk/results/table4_computation_cost_summary.csv:1)
-- [results/figures/table4_computation_cost.png](/home/tomato/scape-zk/results/figures/table4_computation_cost.png)
-- [results/figures/table4_linegraphs_paperstyle.png](/home/tomato/scape-zk/results/figures/table4_linegraphs_paperstyle.png)
-- [results/figures/matched_proof_cost.png](/home/tomato/scape-zk/results/figures/matched_proof_cost.png)
-- [results/figures/matched_verification_cost.png](/home/tomato/scape-zk/results/figures/matched_verification_cost.png)
+## Figures Used In The Report
+
+The main figures currently used in the report are:
+
+- [Off-Chain Authorization Preparation Cost](/home/tomato/scape-zk/results/figures/off_chain_authorization_preparation_cost.pdf)
+- [Proof Verification Latency](/home/tomato/scape-zk/results/figures/proof_verification_latency.pdf)
+- [Integrity Verification Latency](/home/tomato/scape-zk/results/figures/integrity_verification_latency.pdf)
+- [Delegation Latency](/home/tomato/scape-zk/results/figures/delegation_latency.pdf)
+
+The plotting scripts kept for the report figures are:
+
+- `scripts/plot_off_chain_authorization_preparation_cost.py --all-baselines --n-max 200`: off-chain authorization preparation cost
+- `scripts/plot_proof_verification_comparison.py`: proof verification latency
+- `scripts/plot_integrity_verification_latency.py`: integrity verification latency
+- `scripts/plot_encryption_and_delegation_latency.py`: delegation latency
+
+## Troubleshooting
+
+### `circom: command not found`
+
+Install `circom` and ensure it is available on your shell `PATH`.
+
+### `snarkjs: command not found`
+
+Use the local binary with `npx snarkjs`, or export:
+
+```bash
+export PATH="$PWD/node_modules/.bin:$PATH"
+```
+
+### Python plotting scripts fail with missing modules
+
+Make sure the virtual environment is activated and install:
+
+```bash
+pip install matplotlib numpy pandas
+```
+
+### The readiness check does not reach `9/9 checks passed`
+
+Recheck:
+
+- Node.js is installed
+- Python 3 is installed
+- `circom` is installed
+- `snarkjs` is available
+- the checked-in files under `circuits/` and `keys/` are present
+
+## Current Scope Note
+
+This repository includes working SCAPE-ZK experiments and active figure
+generation code. It does not yet contain full, faithful reproductions of all
+baseline systems discussed in the report. Historical reproduction status is documented in
+[baselines/README.md](/home/tomato/scape-zk/baselines/README.md:1).

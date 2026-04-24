@@ -44,5 +44,5 @@ pairing setting.
   - `T_sym = 0.005631 ms`
 - Source files:
   - `results/primitive_microbench.csv`
-  - `results/table4_modeled_comparison.csv`
-  - `results/table4_computation_cost_summary.csv`
+  - `results/cross_scheme_modeled_computation_comparison.csv`
+  - `results/cross_scheme_computation_cost_summary.csv`
