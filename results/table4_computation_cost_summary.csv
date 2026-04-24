@@ -1,21 +1,21 @@
 scheme,metric,value_ms,source
-SCAPE-ZK,Proof Gen,145.996,measured: groth16_bench.csv request prove_fullprove
+SCAPE-ZK,Proof Gen,752.726,derived: first-time setup proof = session prove_fullprove + request prove_fullprove
 SCAPE-ZK,Amortized Proof,158.1306,derived: (session + 50*request)/50
 SCAPE-ZK,Encrypt,25.1528,measured+derived: cpabe_encrypt + sym_encrypt_1KB @ N=10
 SCAPE-ZK,Proof Ver,13.293,measured: groth16_bench.csv request verify
-SCAPE-ZK,Integrity / Delegation,0.6134,measured: pre_bench.csv re_encrypt
+SCAPE-ZK,Integrity / Delegation,0.6162,derived: re_encrypt + merkle_verify + leaf_hash
 XAuth,Proof Gen,89700.0,paper anchor / baseline_sim.py
 XAuth,Amortized Proof,89700.0,paper anchor / baseline_sim.py
-XAuth,Encrypt,,NA: no defensible exact value in repo yet
+XAuth,Encrypt,,NA: XAuth paper path has no directly comparable encryption cell
 XAuth,Proof Ver,9.0,paper anchor / baseline_sim.py
-XAuth,Integrity / Delegation,,NA: no defensible exact value in repo yet
-SSL-XIoMT,Proof Gen,6.94,paper-derived simulator / baseline_sim.py
-SSL-XIoMT,Amortized Proof,6.94,paper-derived simulator / baseline_sim.py
-SSL-XIoMT,Encrypt,,NA: no defensible exact value in repo yet
-SSL-XIoMT,Proof Ver,1.0893,paper-derived simulator / baseline_sim.py
-SSL-XIoMT,Integrity / Delegation,,NA: no defensible exact value in repo yet
-Scheme [30],Proof Gen,,NA: no defensible exact value in repo yet
-Scheme [30],Amortized Proof,,NA: no defensible exact value in repo yet
-Scheme [30],Encrypt,,NA: no defensible exact value in repo yet
-Scheme [30],Proof Ver,,NA: no defensible exact value in repo yet
-Scheme [30],Integrity / Delegation,,NA: no defensible exact value in repo yet
+XAuth,Integrity / Delegation,0.0066,strict integrity model / baseline_sim.py
+SSL-XIoMT,Proof Gen,6.94,paper anchor / baseline_sim.py
+SSL-XIoMT,Amortized Proof,6.94,paper anchor / baseline_sim.py
+SSL-XIoMT,Encrypt,39.5276,primitive proxy / baseline_sim.py
+SSL-XIoMT,Proof Ver,1.0893,paper anchor / baseline_sim.py
+SSL-XIoMT,Integrity / Delegation,0.0022,strict integrity model / baseline_sim.py
+Scheme [30],Proof Gen,36.324,primitive proxy / baseline_sim.py
+Scheme [30],Amortized Proof,20.6902,primitive proxy / baseline_sim.py
+Scheme [30],Encrypt,,"NA: Scheme [30] path is credential-oriented, not payload encryption"
+Scheme [30],Proof Ver,30.844,primitive proxy / baseline_sim.py
+Scheme [30],Integrity / Delegation,0.0022,strict integrity model / baseline_sim.py

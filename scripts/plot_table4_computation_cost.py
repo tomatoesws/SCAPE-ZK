@@ -35,7 +35,13 @@ from matplotlib.patches import Patch
 from matplotlib.ticker import ScalarFormatter
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from baseline_sim import sslxiomt_simulate
+from baseline_sim import (
+    load_primitives,
+    scheme30_simulate,
+    simulate_integrity_costs,
+    sslxiomt_simulate,
+    xauth_simulate,
+)
 
 
 ROOT = Path.home() / "scape-zk"
@@ -46,6 +52,7 @@ FIGS.mkdir(parents=True, exist_ok=True)
 GROTH16_CSV = RESULTS / "groth16_bench.csv"
 CPABE_CSV = RESULTS / "cpabe_bench.csv"
 PRE_CSV = RESULTS / "pre_bench.csv"
+MERKLE_CSV = RESULTS / "merkle_bench.csv"
 SUMMARY_CSV = RESULTS / "table4_computation_cost_summary.csv"
 
 # Representative workload point for scalar Table IV comparison.
@@ -54,30 +61,6 @@ REP_REQUESTS = 50
 
 # Optional paper-extracted overrides. Leave as None when the repo does not yet
 # contain a defensible exact value for that Table IV cell.
-BASELINE_OVERRIDES = {
-    "XAuth": {
-        "Proof Gen": 89_700.0,            # paper anchor (Table 2)
-        "Amortized Proof": 89_700.0,      # no amortization in paper model
-        "Encrypt": None,
-        "Proof Ver": 9.0,                 # paper anchor (per user)
-        "Integrity / Delegation": None,
-    },
-    "SSL-XIoMT": {
-        "Proof Gen": sslxiomt_simulate(1)["total_ms"],   # 6.94 ms / proof
-        "Amortized Proof": sslxiomt_simulate(1)["total_ms"],
-        "Encrypt": None,
-        "Proof Ver": 1000.0 / 918.0,      # throughput-derived per proof/user
-        "Integrity / Delegation": None,
-    },
-    "Scheme [30]": {
-        "Proof Gen": None,
-        "Amortized Proof": None,
-        "Encrypt": None,
-        "Proof Ver": None,
-        "Integrity / Delegation": None,
-    },
-}
-
 METRICS = [
     "Proof Gen",
     "Amortized Proof",
@@ -114,6 +97,7 @@ def build_scape_values() -> Dict[str, ValueCell]:
     groth = pd.read_csv(GROTH16_CSV)
     cpabe = pd.read_csv(CPABE_CSV)
     pre = pd.read_csv(PRE_CSV)
+    merkle = pd.read_csv(MERKLE_CSV)
 
     t_sess = latest_value(groth, {"circuit": "session", "metric": "prove_fullprove"})
     t_req = latest_value(groth, {"circuit": "request", "metric": "prove_fullprove"})
@@ -121,9 +105,14 @@ def build_scape_values() -> Dict[str, ValueCell]:
     t_abe = latest_value(cpabe, {"n_attrs": REP_ATTRS, "operation": "cpabe_encrypt"})
     t_sym = latest_value(cpabe, {"n_attrs": REP_ATTRS, "operation": "sym_encrypt_1KB"})
     t_pre = latest_value(pre, {"operation": "re_encrypt"})
+    t_merk = latest_value(merkle, {"operation": "merkle_verify"})
+    t_leaf = latest_value(merkle, {"operation": "leaf_hash"})
 
     return {
-        "Proof Gen": ValueCell(t_req, "measured: groth16_bench.csv request prove_fullprove"),
+        "Proof Gen": ValueCell(
+            t_sess + t_req,
+            "derived: first-time setup proof = session prove_fullprove + request prove_fullprove",
+        ),
         "Amortized Proof": ValueCell(
             (t_sess + REP_REQUESTS * t_req) / REP_REQUESTS,
             f"derived: (session + {REP_REQUESTS}*request)/{REP_REQUESTS}",
@@ -134,28 +123,71 @@ def build_scape_values() -> Dict[str, ValueCell]:
         ),
         "Proof Ver": ValueCell(t_req_v, "measured: groth16_bench.csv request verify"),
         "Integrity / Delegation": ValueCell(
-            t_pre,
-            "measured: pre_bench.csv re_encrypt",
+            t_pre + t_merk + t_leaf,
+            "derived: re_encrypt + merkle_verify + leaf_hash",
         ),
     }
 
 
 def build_baseline_values() -> Dict[str, Dict[str, ValueCell]]:
-    result: Dict[str, Dict[str, ValueCell]] = {}
-    for scheme, cells in BASELINE_OVERRIDES.items():
-        scheme_cells: Dict[str, ValueCell] = {}
-        for metric in METRICS:
-            val = cells.get(metric)
-            if val is None:
-                scheme_cells[metric] = ValueCell(None, "NA: no defensible exact value in repo yet")
-            elif scheme == "XAuth" and metric in {"Proof Gen", "Amortized Proof", "Proof Ver"}:
-                scheme_cells[metric] = ValueCell(val, "paper anchor / baseline_sim.py")
-            elif scheme == "SSL-XIoMT" and metric in {"Proof Gen", "Amortized Proof", "Proof Ver"}:
-                scheme_cells[metric] = ValueCell(val, "paper-derived simulator / baseline_sim.py")
-            else:
-                scheme_cells[metric] = ValueCell(val, "manual override")
-        result[scheme] = scheme_cells
-    return result
+    p = load_primitives()
+    merkle = pd.read_csv(MERKLE_CSV)
+    pre = pd.read_csv(PRE_CSV)
+    t_merk = latest_value(merkle, {"operation": "merkle_verify"})
+    t_leaf = latest_value(merkle, {"operation": "leaf_hash"})
+    t_pre = latest_value(pre, {"operation": "re_encrypt"})
+    integrity = simulate_integrity_costs(
+        {
+            "T_hash": p.thash_ms,
+            "T_leaf_hash": t_leaf,
+            "T_merk": t_merk,
+            "T_pre": t_pre,
+        },
+        n_users=1,
+        n_system_records=REP_REQUESTS,
+    )
+    xauth = xauth_simulate(p, n_users=1)
+    ssl = sslxiomt_simulate(1, primitives=p, n_attrs=REP_ATTRS)
+    scheme30 = scheme30_simulate(
+        p,
+        n_k_disclosed=min(REP_ATTRS, 10),
+        n_attrs_total=max(REP_ATTRS, 10),
+        n_issuers=5,
+        batch_users=1,
+    )
+
+    return {
+        "XAuth": {
+            "Proof Gen": ValueCell(xauth["proof_gen_ms"], "paper anchor / baseline_sim.py"),
+            "Amortized Proof": ValueCell(xauth["proof_gen_ms"], "paper anchor / baseline_sim.py"),
+            "Encrypt": ValueCell(None, "NA: XAuth paper path has no directly comparable encryption cell"),
+            "Proof Ver": ValueCell(xauth["verify_ms"], "paper anchor / baseline_sim.py"),
+            "Integrity / Delegation": ValueCell(
+                integrity["XAuth"],
+                "strict integrity model / baseline_sim.py",
+            ),
+        },
+        "SSL-XIoMT": {
+            "Proof Gen": ValueCell(ssl["total_ms"], "paper anchor / baseline_sim.py"),
+            "Amortized Proof": ValueCell(ssl["total_ms"], "paper anchor / baseline_sim.py"),
+            "Encrypt": ValueCell(ssl["encrypt_proxy_ms"], "primitive proxy / baseline_sim.py"),
+            "Proof Ver": ValueCell(ssl["verify_ms_per_proof"], "paper anchor / baseline_sim.py"),
+            "Integrity / Delegation": ValueCell(
+                integrity["SSL_XIoMT"],
+                "strict integrity model / baseline_sim.py",
+            ),
+        },
+        "Scheme [30]": {
+            "Proof Gen": ValueCell(scheme30["issue_ms"], "primitive proxy / baseline_sim.py"),
+            "Amortized Proof": ValueCell(scheme30["show_ms"], "primitive proxy / baseline_sim.py"),
+            "Encrypt": ValueCell(None, "NA: Scheme [30] path is credential-oriented, not payload encryption"),
+            "Proof Ver": ValueCell(scheme30["verify_ms"], "primitive proxy / baseline_sim.py"),
+            "Integrity / Delegation": ValueCell(
+                integrity["Scheme30"],
+                "strict integrity model / baseline_sim.py",
+            ),
+        },
+    }
 
 
 def write_summary_csv(table: Dict[str, Dict[str, ValueCell]]) -> None:

@@ -12,12 +12,15 @@ import numpy as np
 import pandas as pd
 from matplotlib.ticker import MaxNLocator
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
+import sys
 
 
 ROOT = Path.home() / "scape-zk"
 RESULTS = ROOT / "results"
 OUT = RESULTS / "figures"
 OUT.mkdir(parents=True, exist_ok=True)
+sys.path.insert(0, str(ROOT))
+from baseline_sim import load_primitives, scheme30_simulate, sslxiomt_simulate, xauth_simulate
 
 GROTH16_CSV = RESULTS / "groth16_bench.csv"
 CPABE_CSV = RESULTS / "cpabe_bench.csv"
@@ -90,26 +93,34 @@ def scape_verification_curve() -> list[float]:
 
 
 def main() -> None:
+    p = load_primitives()
     szk_gen = scape_proof_generation()
     n_amort, szk_amort = scape_amortized_curve()
     szk_enc = scape_encrypt_curve()
     szk_ver = scape_verification_curve()
 
-    # Baseline curves carried over from the repo's existing analysis.
-    xauth_gen = [89700.0] * len(ATTR_COUNTS)
-    ssl_gen = [7.6] * len(ATTR_COUNTS)
-    scheme30_gen = [25.0, 35.0, 45.0, 65.0]
+    xauth_gen = [xauth_simulate(p, n_users=1)["proof_gen_ms"]] * len(ATTR_COUNTS)
+    ssl_gen = [sslxiomt_simulate(1, primitives=p, n_attrs=n)["total_ms"] for n in ATTR_COUNTS]
+    scheme30_gen = [
+        scheme30_simulate(p, n_k_disclosed=min(n, 10), n_attrs_total=n, n_issuers=5)["issue_ms"]
+        for n in ATTR_COUNTS
+    ]
 
-    xauth_amort = [89700.0] * len(n_amort)
-    ssl_amort = [7.6] * len(n_amort)
-    scheme30_amort = [25.0 + 20.0 / max(1, n) for n in n_amort]
+    xauth_amort = [xauth_simulate(p, n_users=1)["proof_gen_ms"]] * len(n_amort)
+    ssl_amort = [sslxiomt_simulate(1, primitives=p, n_attrs=10)["total_ms"]] * len(n_amort)
+    scheme30_amort = [
+        scheme30_simulate(p, n_k_disclosed=5, n_attrs_total=10, n_issuers=5, batch_users=n)["show_ms"]
+        for n in n_amort
+    ]
 
-    ssl_enc = [10.0, 18.0, 30.0, 80.0]
+    ssl_enc = [sslxiomt_simulate(1, primitives=p, n_attrs=n)["encrypt_proxy_ms"] for n in ATTR_COUNTS]
 
-    xauth_ver = [9.0 * b for b in BATCH_SIZES]
-    ssl_ver = [1.089 * b for b in BATCH_SIZES]
-    scheme30_ver = [latest_value(pd.read_csv(BLS_CSV), {"batch_size": b, "operation": "verify_agg"})
-                    for b in BATCH_SIZES]
+    xauth_ver = [xauth_simulate(p, n_users=b)["verify_ms"] for b in BATCH_SIZES]
+    ssl_ver = [sslxiomt_simulate(b, primitives=p, n_attrs=10)["verify_ms_per_proof"] * b for b in BATCH_SIZES]
+    scheme30_ver = [
+        scheme30_simulate(p, n_k_disclosed=5, n_attrs_total=10, n_issuers=5, batch_users=b)["verify_ms"]
+        for b in BATCH_SIZES
+    ]
 
     colors = {
         "scape": "#1a5490",

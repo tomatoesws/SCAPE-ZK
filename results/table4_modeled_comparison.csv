@@ -3,18 +3,18 @@ XAuth,Proof Gen,89700.0,modeled_comparison,SCAPE-ZK uses local measured CSV valu
 XAuth,Amortized Proof,89700.0,modeled_comparison,SCAPE-ZK uses local measured CSV values; baselines are formula-instantiated using local primitive timings and paper anchors where available.
 XAuth,Encrypt,0.0,modeled_comparison,SCAPE-ZK uses local measured CSV values; baselines are formula-instantiated using local primitive timings and paper anchors where available.
 XAuth,Proof Ver,9.0,modeled_comparison,SCAPE-ZK uses local measured CSV values; baselines are formula-instantiated using local primitive timings and paper anchors where available.
-XAuth,Integrity / Delegation,0.002848,modeled_comparison,SCAPE-ZK uses local measured CSV values; baselines are formula-instantiated using local primitive timings and paper anchors where available.
+XAuth,Integrity / Delegation,0.006645,modeled_comparison,SCAPE-ZK uses local measured CSV values; baselines are formula-instantiated using local primitive timings and paper anchors where available.
 SSL-XIoMT,Proof Gen,6.94,modeled_comparison,SCAPE-ZK uses local measured CSV values; baselines are formula-instantiated using local primitive timings and paper anchors where available.
 SSL-XIoMT,Amortized Proof,6.94,modeled_comparison,SCAPE-ZK uses local measured CSV values; baselines are formula-instantiated using local primitive timings and paper anchors where available.
-SSL-XIoMT,Encrypt,25.1528,modeled_comparison,SCAPE-ZK uses local measured CSV values; baselines are formula-instantiated using local primitive timings and paper anchors where available.
+SSL-XIoMT,Encrypt,39.527593,modeled_comparison,SCAPE-ZK uses local measured CSV values; baselines are formula-instantiated using local primitive timings and paper anchors where available.
 SSL-XIoMT,Proof Ver,1.089325,modeled_comparison,SCAPE-ZK uses local measured CSV values; baselines are formula-instantiated using local primitive timings and paper anchors where available.
-SSL-XIoMT,Integrity / Delegation,0.002848,modeled_comparison,SCAPE-ZK uses local measured CSV values; baselines are formula-instantiated using local primitive timings and paper anchors where available.
-Scheme [30],Proof Gen,145.996,modeled_comparison,SCAPE-ZK uses local measured CSV values; baselines are formula-instantiated using local primitive timings and paper anchors where available.
-Scheme [30],Amortized Proof,152.28626,modeled_comparison,SCAPE-ZK uses local measured CSV values; baselines are formula-instantiated using local primitive timings and paper anchors where available.
+SSL-XIoMT,Integrity / Delegation,0.002215,modeled_comparison,SCAPE-ZK uses local measured CSV values; baselines are formula-instantiated using local primitive timings and paper anchors where available.
+Scheme [30],Proof Gen,36.323984,modeled_comparison,SCAPE-ZK uses local measured CSV values; baselines are formula-instantiated using local primitive timings and paper anchors where available.
+Scheme [30],Amortized Proof,20.690194,modeled_comparison,SCAPE-ZK uses local measured CSV values; baselines are formula-instantiated using local primitive timings and paper anchors where available.
 Scheme [30],Encrypt,0.0,modeled_comparison,SCAPE-ZK uses local measured CSV values; baselines are formula-instantiated using local primitive timings and paper anchors where available.
-Scheme [30],Proof Ver,327.806,modeled_comparison,SCAPE-ZK uses local measured CSV values; baselines are formula-instantiated using local primitive timings and paper anchors where available.
-Scheme [30],Integrity / Delegation,0.000988,modeled_comparison,SCAPE-ZK uses local measured CSV values; baselines are formula-instantiated using local primitive timings and paper anchors where available.
-SCAPE-ZK,Proof Gen,145.996,modeled_comparison,SCAPE-ZK uses local measured CSV values; baselines are formula-instantiated using local primitive timings and paper anchors where available.
+Scheme [30],Proof Ver,30.952486,modeled_comparison,SCAPE-ZK uses local measured CSV values; baselines are formula-instantiated using local primitive timings and paper anchors where available.
+Scheme [30],Integrity / Delegation,0.002215,modeled_comparison,SCAPE-ZK uses local measured CSV values; baselines are formula-instantiated using local primitive timings and paper anchors where available.
+SCAPE-ZK,Proof Gen,752.726,modeled_comparison,SCAPE-ZK uses local measured CSV values; baselines are formula-instantiated using local primitive timings and paper anchors where available.
 SCAPE-ZK,Amortized Proof,158.1306,modeled_comparison,SCAPE-ZK uses local measured CSV values; baselines are formula-instantiated using local primitive timings and paper anchors where available.
 SCAPE-ZK,Encrypt,25.1528,modeled_comparison,SCAPE-ZK uses local measured CSV values; baselines are formula-instantiated using local primitive timings and paper anchors where available.
 SCAPE-ZK,Proof Ver,13.293,modeled_comparison,SCAPE-ZK uses local measured CSV values; baselines are formula-instantiated using local primitive timings and paper anchors where available.

@@ -10,6 +10,10 @@ t_hash_leaf,0.000988
 t_merk_verify,0.00186
 t_pre_verify,0.6134
 t_pair_onchain,30.9396
+t_hash_micro,0.002215
+t_grp_micro,0.456854
+t_pair_micro,14.724512
+t_sym_micro,0.005631
 representative_attrs,10.0
 representative_batch,50.0
 representative_requests,50.0

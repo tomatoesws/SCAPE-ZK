@@ -1,0 +1,6 @@
+parameter,value,source
+T_init_ms,752.726,results/cumulative_proof_modeled_summary.csv
+T_agg_overhead_ms,0.024321,"linear fit over results/bls_bench.csv aggregate rows; intercept=1.726853 ms, slope=0.024321 ms/item"
+Scheme [30]_baseline_cost_ms,20.690194,repo-known modeled anchor or explicit custom input
+Scheme [30]_theoretical_first_crossing_batch,37.0,"floor(T_init / (B - T_agg)) + 1, valid only when B > T_agg"
+Scheme [30]_observed_first_crossing_batch,37.0,first integer N in plotted range where SCAPE-ZK < baseline

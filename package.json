@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "baseline:check": "python3 tools/baseline_check.py",
+    "bench:primitives": "node scripts/bench_primitives.js",
+    "compare:artifacts": "bash -lc 'MPLCONFIGDIR=/tmp/matplotlib ./.venv/bin/python scripts/build_modeled_table4_comparison.py && MPLCONFIGDIR=/tmp/matplotlib ./.venv/bin/python scripts/plot_table4_computation_cost.py && MPLCONFIGDIR=/tmp/matplotlib ./.venv/bin/python scripts/plot_table4_linegraphs.py && MPLCONFIGDIR=/tmp/matplotlib ./.venv/bin/python scripts/plot_matched_parameter_figures.py'",
+    "gen:inputs": "node scripts/gen_inputs.js",
+    "sim:baseline": "python3 baseline_sim.py",
+    "test": "python3 tools/baseline_check.py"
   },
   "keywords": [],
   "author": "",

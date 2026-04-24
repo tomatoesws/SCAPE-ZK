@@ -38,7 +38,13 @@ MODELED_CSV = RESULTS / "table4_modeled_comparison.csv"
 PRIMITIVES_CSV = RESULTS / "table4_modeled_primitives.csv"
 
 sys.path.insert(0, str(ROOT))
-from baseline_sim import sslxiomt_simulate
+from baseline_sim import (
+    load_primitives,
+    scheme30_simulate,
+    simulate_integrity_costs,
+    sslxiomt_simulate,
+    xauth_simulate,
+)
 
 
 REP_ATTRS = 10
@@ -89,6 +95,8 @@ def measure_primitives() -> dict[str, float]:
     t_pre_verify = latest_value(pre, {"operation": "re_encrypt"})
     t_pair_onchain = latest_value(bls, {"batch_size": REP_BATCH, "operation": "pairing_only"})
 
+    micro = load_primitives()
+
     return {
         "t_zk_prove_creq": t_zk_prove_creq,
         "t_zk_prove_csess": t_zk_prove_csess,
@@ -101,6 +109,10 @@ def measure_primitives() -> dict[str, float]:
         "t_merk_verify": t_merk_verify,
         "t_pre_verify": t_pre_verify,
         "t_pair_onchain": t_pair_onchain,
+        "t_hash_micro": micro.thash_ms,
+        "t_grp_micro": micro.tgrp_ms,
+        "t_pair_micro": micro.tpair_ms,
+        "t_sym_micro": micro.tsym_ms,
         "representative_attrs": REP_ATTRS,
         "representative_batch": REP_BATCH,
         "representative_requests": REP_REQUESTS,
@@ -108,40 +120,80 @@ def measure_primitives() -> dict[str, float]:
 
 
 def xauth_formula(t: dict[str, float], n: int) -> dict[str, float]:
+    p = load_primitives()
+    model = xauth_simulate(p, n_users=1)
+    integrity = simulate_integrity_costs(
+        {
+            "T_hash": t["t_hash_micro"],
+            "T_leaf_hash": t["t_hash_leaf"],
+            "T_merk": t["t_merk_verify"],
+            "T_pre": t["t_pre_verify"],
+        },
+        n_users=1,
+        n_system_records=n,
+    )
     return {
-        "Proof Gen": 89_700.0,
-        "Amortized Proof": 89_700.0,
+        "Proof Gen": model["proof_gen_ms"],
+        "Amortized Proof": model["proof_gen_ms"],
         "Encrypt": 0.0,
-        "Proof Ver": 9.0,
-        "Integrity / Delegation": t["t_merk_verify"] + t["t_hash_leaf"],
+        "Proof Ver": model["verify_ms"],
+        "Integrity / Delegation": integrity["XAuth"],
     }
 
 
 def ssl_xiomt_formula(t: dict[str, float], n: int) -> dict[str, float]:
-    paper_proof = sslxiomt_simulate(1)["total_ms"]
+    p = load_primitives()
+    model = sslxiomt_simulate(1, primitives=p, n_attrs=REP_ATTRS)
+    integrity = simulate_integrity_costs(
+        {
+            "T_hash": t["t_hash_micro"],
+            "T_leaf_hash": t["t_hash_leaf"],
+            "T_merk": t["t_merk_verify"],
+            "T_pre": t["t_pre_verify"],
+        },
+        n_users=1,
+        n_system_records=n,
+    )
     return {
-        "Proof Gen": paper_proof,
-        "Amortized Proof": paper_proof,
-        "Encrypt": t["t_sym_enc"] + t["t_abe_enc"] + t["t_ecc_enc"],
-        "Proof Ver": 1000.0 / 918.0,
-        "Integrity / Delegation": t["t_merk_verify"] + t["t_hash_leaf"],
+        "Proof Gen": model["total_ms"],
+        "Amortized Proof": model["total_ms"],
+        "Encrypt": model["encrypt_proxy_ms"],
+        "Proof Ver": model["verify_ms_per_proof"],
+        "Integrity / Delegation": integrity["SSL_XIoMT"],
     }
 
 
 def scheme30_formula(t: dict[str, float], n: int) -> dict[str, float]:
-    pair_plus_groups = t["t_pair_group_verify"]
+    p = load_primitives()
+    model = scheme30_simulate(
+        p,
+        n_k_disclosed=min(REP_ATTRS, 10),
+        n_attrs_total=max(REP_ATTRS, 10),
+        n_issuers=5,
+        batch_users=max(1, n),
+    )
+    integrity = simulate_integrity_costs(
+        {
+            "T_hash": t["t_hash_micro"],
+            "T_leaf_hash": t["t_hash_leaf"],
+            "T_merk": t["t_merk_verify"],
+            "T_pre": t["t_pre_verify"],
+        },
+        n_users=1,
+        n_system_records=n,
+    )
     return {
-        "Proof Gen": t["t_zk_prove_creq"],
-        "Amortized Proof": t["t_zk_prove_creq"] + (pair_plus_groups / n),
+        "Proof Gen": model["issue_ms"],
+        "Amortized Proof": model["show_ms"],
         "Encrypt": 0.0,
-        "Proof Ver": t["t_zk_verify"] + pair_plus_groups,
-        "Integrity / Delegation": t["t_hash_leaf"],
+        "Proof Ver": model["verify_ms"],
+        "Integrity / Delegation": integrity["Scheme30"],
     }
 
 
 def scape_zk_formula(t: dict[str, float], n: int) -> dict[str, float]:
     return {
-        "Proof Gen": t["t_zk_prove_creq"],
+        "Proof Gen": t["t_zk_prove_csess"] + t["t_zk_prove_creq"],
         "Amortized Proof": (t["t_zk_prove_csess"] + n * t["t_zk_prove_creq"]) / n,
         "Encrypt": t["t_sym_enc"] + t["t_abe_enc"],
         "Proof Ver": t["t_zk_verify"],

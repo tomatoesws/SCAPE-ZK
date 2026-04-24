@@ -10,12 +10,15 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import pandas as pd
 from matplotlib.ticker import MaxNLocator
+import sys
 
 
 ROOT = Path.home() / "scape-zk"
 RESULTS = ROOT / "results"
 OUT = RESULTS / "figures"
 OUT.mkdir(parents=True, exist_ok=True)
+sys.path.insert(0, str(ROOT))
+from baseline_sim import load_primitives, sslxiomt_simulate, xauth_simulate
 
 GROTH16_CSV = RESULTS / "groth16_bench.csv"
 BLS_CSV = RESULTS / "bls_bench.csv"
@@ -62,6 +65,7 @@ def style_axis(ax, xlabel: str, ylabel: str, title: str, xvals: list[int], y_max
 
 
 def main() -> None:
+    p = load_primitives()
     groth = pd.read_csv(GROTH16_CSV)
     bls = pd.read_csv(BLS_CSV)
 
@@ -70,16 +74,16 @@ def main() -> None:
     scape_amort = [((t_sess + n * t_req) / n) for n in REQUEST_COUNTS]
     scape_req = [t_req for _ in REQUEST_COUNTS]
 
-    xauth_gen = [89700.0 for _ in REQUEST_COUNTS]
-    ssl_gen = [69400.0 / 10000.0 for _ in REQUEST_COUNTS]  # 6.94 ms / proof
+    xauth_gen = [xauth_simulate(p, n_users=1)["proof_gen_ms"] for _ in REQUEST_COUNTS]
+    ssl_gen = [sslxiomt_simulate(1, primitives=p, n_attrs=10)["total_ms"] for _ in REQUEST_COUNTS]
 
     pair_map = {
         n: latest_value(bls, {"batch_size": n, "operation": "pairing_only"})
         for n in USER_COUNTS
     }
     scape_verify = [pair_map[n] for n in USER_COUNTS]
-    xauth_verify = [9.0 * n for n in USER_COUNTS]
-    ssl_verify = [(1000.0 / 918.0) * n for n in USER_COUNTS]
+    xauth_verify = [xauth_simulate(p, n_users=n)["verify_ms"] for n in USER_COUNTS]
+    ssl_verify = [sslxiomt_simulate(n, primitives=p, n_attrs=10)["verify_ms_per_proof"] * n for n in USER_COUNTS]
 
     colors = {
         "scape": "#1a5490",

@@ -1,0 +1,10 @@
+scheme,role,value_ms,source
+SCAPE-ZK,first_request_total,752.726,local measured: session prove_fullprove + request prove_fullprove
+SCAPE-ZK,subsequent_request_cost,145.996,local measured: request prove_fullprove
+XAuth,baseline_per_request_cost,89700.0,baseline_sim.py paper anchor
+SSL-XIoMT,baseline_per_request_cost,6.94,baseline_sim.py paper anchor / proxy mix
+Scheme [30],baseline_per_request_cost,20.690194,baseline_sim.py primitive proxy (show_ms)
+XAuth,crossing_request_index,1,first n where SCAPE cumulative < baseline cumulative
+SSL-XIoMT,crossing_request_index,,first n where SCAPE cumulative < baseline cumulative
+Scheme [30],crossing_request_index,,first n where SCAPE cumulative < baseline cumulative
+ALL_BASELINES,universal_efficiency_window_start,,first n where SCAPE is below all modeled baselines

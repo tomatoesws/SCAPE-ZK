@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "baselines": [
+    {
+      "id": "xauth",
+      "label": "XAuth [6]",
+      "paper_title": "XAuth: Efficient Privacy-Preserving Cross-Domain Authentication",
+      "current_mode": "paper_modeled",
+      "repo_status": "no faithful protocol implementation yet",
+      "evidence_in_repo": [
+        "baseline_sim.py",
+        "Day1_Baseline_Cost_Formulas.md",
+        "results/parameter_alignment.md"
+      ],
+      "required_to_be_real": [
+        "define concrete protocol stages to reproduce",
+        "map the paper's anonymous-authentication statements to executable primitives",
+        "implement the certificate, MMHT, IPFS/blockchain, and anonymous-authentication path or clearly scoped subset",
+        "generate reproducible benchmark commands and outputs"
+      ],
+      "risk_notes": [
+        "the paper reports aggregate timings but does not provide a ready-to-run reference implementation in this repo",
+        "full system reproduction likely needs PKI, CT, blockchain, IPFS, and Pinocchio-era proof tooling"
+      ]
+    },
+    {
+      "id": "ssl_xiomt",
+      "label": "SSL-XIoMT [8]",
+      "paper_title": "SSL-XIoMT: Secure, Scalable, and Lightweight Cross-Domain IoMT Sharing With SSI and ZKP Authentication",
+      "current_mode": "paper_modeled",
+      "repo_status": "no faithful protocol implementation yet",
+      "evidence_in_repo": [
+        "baseline_sim.py",
+        "Day1_Baseline_Cost_Formulas.md",
+        "results/parameter_alignment.md"
+      ],
+      "required_to_be_real": [
+        "define minimal reproducible subset of the architecture",
+        "separate SSI, Hyperledger, MPC, PLONK or STARK, fog-node CP-ABE, and zk-rollup claims into measurable modules",
+        "replace paper-derived throughput constants with measured runs",
+        "capture exact commands and benchmark datasets"
+      ],
+      "risk_notes": [
+        "the paper combines several subsystems and does not expose enough implementation detail here to rebuild the full stack directly",
+        "full reproduction would be a new research project, not a small benchmark script"
+      ]
+    },
+    {
+      "id": "scheme30",
+      "label": "Scheme [30]",
+      "paper_title": "anonymous credential baseline cited as [30] in the comparison context",
+      "current_mode": "paper_modeled",
+      "repo_status": "citation mapping needs confirmation before implementation",
+      "evidence_in_repo": [
+        "baseline_sim.py",
+        "results/parameter_alignment.md",
+        "results/table4_computation_cost_summary.csv"
+      ],
+      "required_to_be_real": [
+        "confirm the exact bibliographic source used as [30] in the comparison",
+        "extract the exact algorithms, credential format, issuer model, and performance targets",
+        "implement a minimal end-to-end credential issuance and verification flow",
+        "benchmark only on workload axes that truly overlap with SCAPE-ZK"
+      ],
+      "risk_notes": [
+        "the current local file named [30].pdf appears to be a newer SSI paper and may not be the exact source assumed by the current simulator",
+        "without exact citation alignment, any implementation risks reproducing the wrong scheme"
+      ]
+    }
+  ]
+}
