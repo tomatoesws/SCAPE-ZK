@@ -25,10 +25,10 @@ T_PAIR = 20.0
 T_ZK_VERIFY = 25.0
 
 COLORS = {
-    "scape": "#1f5f9f",
-    "scheme30": "#e5a800",
+    "scape": "#e5a800",
+    "scheme30": "#2ca02c",
     "xauth": "#c94a3b",
-    "ssl": "#2ca02c",
+    "ssl": "#1f5f9f",
     "grid": "#9aa0a6",
     "axis": "#111111",
     "bg": "#ffffff",
@@ -105,6 +105,9 @@ def marker_svg(marker: str, x: float, y: float, color: str) -> str:
         return f'  <circle cx="{x:.1f}" cy="{y:.1f}" r="5" fill="{color}" stroke="{stroke}" stroke-width="1"/>'
     if marker == "square":
         return f'  <rect x="{x - 5:.1f}" y="{y - 5:.1f}" width="10" height="10" fill="{color}" stroke="{stroke}" stroke-width="1"/>'
+    if marker == "diamond":
+        points = f"{x:.1f},{y - 6:.1f} {x - 6:.1f},{y:.1f} {x:.1f},{y + 6:.1f} {x + 6:.1f},{y:.1f}"
+        return f'  <polygon points="{points}" fill="{color}" stroke="{stroke}" stroke-width="1"/>'
     if marker == "triangle":
         points = f"{x:.1f},{y - 6:.1f} {x - 6:.1f},{y + 5:.1f} {x + 6:.1f},{y + 5:.1f}"
         return f'  <polygon points="{points}" fill="{color}" stroke="{stroke}" stroke-width="1"/>'
@@ -155,10 +158,10 @@ def write_svg(rows: list[dict[str, float | str]]) -> None:
     y_max = 1500.0
 
     style = {
-        "SCAPE-ZK": {"color": COLORS["scape"], "dash": "", "marker": "circle", "label": "SCAPE-ZK (Ours)"},
-        "Scheme [30]": {"color": COLORS["scheme30"], "dash": "8 4", "marker": "square", "label": "Scheme [30]"},
-        "XAuth [6]": {"color": COLORS["xauth"], "dash": "2 4", "marker": "triangle", "label": "XAuth [6]"},
-        "SSL-XIoMT [8]": {"color": COLORS["ssl"], "dash": "10 4 2 4", "marker": "x", "label": "SSL-XIoMT [8]"},
+        "SCAPE-ZK": {"color": COLORS["scape"], "dash": "", "marker": "diamond", "label": "SCAPE-ZK (Ours)"},
+        "Scheme [30]": {"color": COLORS["scheme30"], "dash": "8 4", "marker": "triangle", "label": "Scheme [30]"},
+        "XAuth [6]": {"color": COLORS["xauth"], "dash": "2 4", "marker": "square", "label": "XAuth [6]"},
+        "SSL-XIoMT [8]": {"color": COLORS["ssl"], "dash": "10 4 2 4", "marker": "circle", "label": "SSL-XIoMT [8]"},
     }
 
     by_scheme: dict[str, list[dict[str, float | str]]] = {}
