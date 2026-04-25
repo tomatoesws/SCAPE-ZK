@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # SCAPE-ZK
 
 SCAPE-ZK is a research prototype and evaluation workspace for a privacy-
