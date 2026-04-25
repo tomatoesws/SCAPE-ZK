@@ -4,9 +4,8 @@
 const { buildPoseidon, buildEddsa } = require("circomlibjs");
 const fs = require("fs");
 const path = require("path");
-const os = require("os");
 
-const ROOT = path.join(os.homedir(), "scape-zk");
+const ROOT = path.resolve(__dirname, "..");
 const NUM_ATTRS = parseInt(process.argv[2] || "10", 10);
 const CHUNK = 14;  // must match session.circom
 

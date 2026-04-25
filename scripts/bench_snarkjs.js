@@ -1,10 +1,8 @@
 const snarkjs = require("snarkjs");
 const fs = require("fs");
 const path = require("path");
-const os = require("os");
 
-const HOME = os.homedir();
-const ROOT = path.join(HOME, "scape-zk");
+const ROOT = path.resolve(__dirname, "..");
 
 function hrMs() {
     const [s, ns] = process.hrtime();

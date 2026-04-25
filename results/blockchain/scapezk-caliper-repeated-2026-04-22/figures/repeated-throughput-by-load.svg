@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="990" height="590" viewBox="0 0 990 590" role="img">
+  <rect width="100%" height="100%" fill="#FFFFFF"/>
+  <style>
+    text { font-family: Arial, Helvetica, sans-serif; fill: #222831; }
+    .title { font-size: 22px; font-weight: 700; }
+    .subtitle { font-size: 13px; fill: #66707A; }
+    .axis { font-size: 12px; fill: #66707A; }
+    .label { font-size: 12px; fill: #222831; }
+    .value { font-size: 12px; font-weight: 700; fill: #222831; }
+    .legend { font-size: 12px; fill: #222831; }
+    .grid { stroke: #D8DDE3; stroke-width: 1; }
+    .axis-line { stroke: #9AA3AD; stroke-width: 1; }
+    .error { stroke: #222831; stroke-width: 1.5; }
+  </style>
+  <text x="90" y="38" class="title">SCAPE-ZK Throughput Scaling by Operation</text>
+  <text x="90" y="60" class="subtitle">Hyperledger Fabric 4-peer network; means across 10 Caliper trials</text>
+  <text x="24" y="290.0" class="axis" transform="rotate(-90 24 290.0)">Throughput (TPS)</text>
+  <line x1="90" y1="485.0" x2="945" y2="485.0" class="grid"/>
+  <text x="78" y="489.0" text-anchor="end" class="axis">0.00</text>
+  <line x1="90" y1="407.0" x2="945" y2="407.0" class="grid"/>
+  <text x="78" y="411.0" text-anchor="end" class="axis">166</text>
+  <line x1="90" y1="329.0" x2="945" y2="329.0" class="grid"/>
+  <text x="78" y="333.0" text-anchor="end" class="axis">332</text>
+  <line x1="90" y1="251.0" x2="945" y2="251.0" class="grid"/>
+  <text x="78" y="255.0" text-anchor="end" class="axis">497</text>
+  <line x1="90" y1="173.0" x2="945" y2="173.0" class="grid"/>
+  <text x="78" y="177.0" text-anchor="end" class="axis">663</text>
+  <line x1="90" y1="95.0" x2="945" y2="95.0" class="grid"/>
+  <text x="78" y="99.0" text-anchor="end" class="axis">829</text>
+  <line x1="90" y1="485" x2="945" y2="485" class="axis-line"/>
+  <line x1="90" y1="95" x2="90" y2="485" class="axis-line"/>
+  <rect x="152.0" y="475.9" width="34.1" height="9.1" rx="3" fill="#007C89"/>
+  <rect x="194.1" y="475.6" width="34.1" height="9.4" rx="3" fill="#D95F43"/>
+  <rect x="236.1" y="475.7" width="34.1" height="9.3" rx="3" fill="#2F455C"/>
+  <rect x="278.2" y="475.5" width="34.1" height="9.5" rx="3" fill="#C4932F"/>
+  <rect x="320.3" y="431.8" width="34.1" height="53.2" rx="3" fill="#4C8B56"/>
+  <text x="253.2" y="511" text-anchor="middle" class="label">100 tx</text>
+  <rect x="416.3" y="423.2" width="34.1" height="61.8" rx="3" fill="#007C89"/>
+  <rect x="458.4" y="423.4" width="34.1" height="61.6" rx="3" fill="#D95F43"/>
+  <rect x="500.5" y="423.4" width="34.1" height="61.6" rx="3" fill="#2F455C"/>
+  <rect x="542.5" y="423.1" width="34.1" height="61.9" rx="3" fill="#C4932F"/>
+  <rect x="584.6" y="274.6" width="34.1" height="210.4" rx="3" fill="#4C8B56"/>
+  <text x="517.5" y="511" text-anchor="middle" class="label">500 tx</text>
+  <rect x="680.7" y="383.8" width="34.1" height="101.2" rx="3" fill="#007C89"/>
+  <rect x="722.7" y="380.9" width="34.1" height="104.1" rx="3" fill="#D95F43"/>
+  <rect x="764.8" y="380.9" width="34.1" height="104.1" rx="3" fill="#2F455C"/>
+  <rect x="806.9" y="380.7" width="34.1" height="104.3" rx="3" fill="#C4932F"/>
+  <rect x="848.9" y="154.5" width="34.1" height="330.5" rx="3" fill="#4C8B56"/>
+  <text x="781.8" y="511" text-anchor="middle" class="label">1000 tx</text>
+  <rect x="90" y="549" width="13" height="13" rx="2" fill="#007C89"/>
+  <text x="110" y="560" class="legend">Register</text>
+  <rect x="245" y="549" width="13" height="13" rx="2" fill="#D95F43"/>
+  <text x="265" y="560" class="legend">VerifyProof</text>
+  <rect x="400" y="549" width="13" height="13" rx="2" fill="#2F455C"/>
+  <text x="420" y="560" class="legend">Revoke</text>
+  <rect x="555" y="549" width="13" height="13" rx="2" fill="#C4932F"/>
+  <text x="575" y="560" class="legend">UpdateCred</text>
+  <rect x="710" y="549" width="13" height="13" rx="2" fill="#4C8B56"/>
+  <text x="730" y="560" class="legend">RecordExists</text>
+</svg>

@@ -2,10 +2,9 @@ const { bls12_381 } = require("@noble/curves/bls12-381.js");
 const blsl = bls12_381.longSignatures;
 const fs = require("fs");
 const path = require("path");
-const os = require("os");
 const crypto = require("crypto");
 
-const ROOT = path.join(os.homedir(), "scape-zk");
+const ROOT = path.resolve(__dirname, "..");
 const BATCH_SIZES = [1, 10, 50, 100, 200];
 const RUNS_PER_OP = 20;
 const WARMUP = 3;

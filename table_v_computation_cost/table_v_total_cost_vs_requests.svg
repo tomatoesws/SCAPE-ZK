@@ -16,18 +16,18 @@
   <text x="24" y="302.0" class="axis" transform="rotate(-90 24 302.0)">Total estimated cost (ms, log scale)</text>
   <line x1="88" y1="508.0" x2="932" y2="508.0" class="grid"/>
   <text x="76" y="512.0" text-anchor="end" class="axis">0.0100</text>
-  <line x1="88" y1="436.4" x2="932" y2="436.4" class="grid"/>
-  <text x="76" y="440.4" text-anchor="end" class="axis">0.1000</text>
-  <line x1="88" y1="364.8" x2="932" y2="364.8" class="grid"/>
-  <text x="76" y="368.8" text-anchor="end" class="axis">1.00</text>
-  <line x1="88" y1="293.1" x2="932" y2="293.1" class="grid"/>
-  <text x="76" y="297.1" text-anchor="end" class="axis">10.0</text>
-  <line x1="88" y1="221.5" x2="932" y2="221.5" class="grid"/>
-  <text x="76" y="225.5" text-anchor="end" class="axis">100</text>
-  <line x1="88" y1="149.9" x2="932" y2="149.9" class="grid"/>
-  <text x="76" y="153.9" text-anchor="end" class="axis">1.00s</text>
-  <line x1="88" y1="99.8" x2="932" y2="99.8" class="grid"/>
-  <text x="76" y="103.8" text-anchor="end" class="axis">5.00s</text>
+  <line x1="88" y1="436.5" x2="932" y2="436.5" class="grid"/>
+  <text x="76" y="440.5" text-anchor="end" class="axis">0.1000</text>
+  <line x1="88" y1="365.0" x2="932" y2="365.0" class="grid"/>
+  <text x="76" y="369.0" text-anchor="end" class="axis">1.00</text>
+  <line x1="88" y1="293.5" x2="932" y2="293.5" class="grid"/>
+  <text x="76" y="297.5" text-anchor="end" class="axis">10.0</text>
+  <line x1="88" y1="222.0" x2="932" y2="222.0" class="grid"/>
+  <text x="76" y="226.0" text-anchor="end" class="axis">100</text>
+  <line x1="88" y1="150.5" x2="932" y2="150.5" class="grid"/>
+  <text x="76" y="154.5" text-anchor="end" class="axis">1.00s</text>
+  <line x1="88" y1="100.5" x2="932" y2="100.5" class="grid"/>
+  <text x="76" y="104.5" text-anchor="end" class="axis">5.00s</text>
   <line x1="88.0" y1="508" x2="88.0" y2="513" class="axis-line"/>
   <text x="88.0" y="531" text-anchor="middle" class="axis">1</text>
   <line x1="126.2" y1="508" x2="126.2" y2="513" class="axis-line"/>
@@ -41,30 +41,30 @@
   <line x1="88" y1="508" x2="932" y2="508" class="axis-line"/>
   <line x1="88" y1="96" x2="88" y2="508" class="axis-line"/>
   <text x="510.0" y="564" text-anchor="middle" class="axis">Number of authorization requests, n</text>
-  <polyline points="88.0,286.6 126.2,215.0 295.8,164.9 507.9,143.3 932.0,121.8" fill="none" stroke="#455A64" stroke-width="3" stroke-dasharray="6 4"/>
+  <polyline points="88.0,286.6 126.2,215.1 295.8,165.2 507.9,143.6 932.0,122.1" fill="none" stroke="#455A64" stroke-width="3" stroke-dasharray="6 4"/>
   <circle cx="88.0" cy="286.6" r="4" fill="#455A64"/>
-  <circle cx="126.2" cy="215.0" r="4" fill="#455A64"/>
-  <circle cx="295.8" cy="164.9" r="4" fill="#455A64"/>
-  <circle cx="507.9" cy="143.3" r="4" fill="#455A64"/>
-  <circle cx="932.0" cy="121.8" r="4" fill="#455A64"/>
-  <polyline points="88.0,286.6 126.2,215.0 295.8,164.9 507.9,143.3 932.0,121.8" fill="none" stroke="#007C89" stroke-width="3"/>
+  <circle cx="126.2" cy="215.1" r="4" fill="#455A64"/>
+  <circle cx="295.8" cy="165.2" r="4" fill="#455A64"/>
+  <circle cx="507.9" cy="143.6" r="4" fill="#455A64"/>
+  <circle cx="932.0" cy="122.1" r="4" fill="#455A64"/>
+  <polyline points="88.0,286.6 126.2,215.1 295.8,165.2 507.9,143.6 932.0,122.1" fill="none" stroke="#007C89" stroke-width="3"/>
   <circle cx="88.0" cy="286.6" r="4" fill="#007C89"/>
-  <circle cx="126.2" cy="215.0" r="4" fill="#007C89"/>
-  <circle cx="295.8" cy="164.9" r="4" fill="#007C89"/>
-  <circle cx="507.9" cy="143.3" r="4" fill="#007C89"/>
-  <circle cx="932.0" cy="121.8" r="4" fill="#007C89"/>
-  <polyline points="88.0,244.3 126.2,199.1 295.8,152.9 507.9,131.9 932.0,110.6" fill="none" stroke="#C4932F" stroke-width="3" stroke-dasharray="3 3"/>
-  <circle cx="88.0" cy="244.3" r="4" fill="#C4932F"/>
-  <circle cx="126.2" cy="199.1" r="4" fill="#C4932F"/>
-  <circle cx="295.8" cy="152.9" r="4" fill="#C4932F"/>
-  <circle cx="507.9" cy="131.9" r="4" fill="#C4932F"/>
+  <circle cx="126.2" cy="215.1" r="4" fill="#007C89"/>
+  <circle cx="295.8" cy="165.2" r="4" fill="#007C89"/>
+  <circle cx="507.9" cy="143.6" r="4" fill="#007C89"/>
+  <circle cx="932.0" cy="122.1" r="4" fill="#007C89"/>
+  <polyline points="88.0,243.6 126.2,198.8 295.8,152.8 507.9,131.8 932.0,110.6" fill="none" stroke="#C4932F" stroke-width="3" stroke-dasharray="3 3"/>
+  <circle cx="88.0" cy="243.6" r="4" fill="#C4932F"/>
+  <circle cx="126.2" cy="198.8" r="4" fill="#C4932F"/>
+  <circle cx="295.8" cy="152.8" r="4" fill="#C4932F"/>
+  <circle cx="507.9" cy="131.8" r="4" fill="#C4932F"/>
   <circle cx="932.0" cy="110.6" r="4" fill="#C4932F"/>
-  <polyline points="88.0,247.8 126.2,208.1 295.8,163.4 507.9,142.6 932.0,121.4" fill="none" stroke="#C2185B" stroke-width="3"/>
-  <circle cx="88.0" cy="247.8" r="4" fill="#C2185B"/>
+  <polyline points="88.0,247.2 126.2,208.1 295.8,163.6 507.9,142.9 932.0,121.7" fill="none" stroke="#C2185B" stroke-width="3"/>
+  <circle cx="88.0" cy="247.2" r="4" fill="#C2185B"/>
   <circle cx="126.2" cy="208.1" r="4" fill="#C2185B"/>
-  <circle cx="295.8" cy="163.4" r="4" fill="#C2185B"/>
-  <circle cx="507.9" cy="142.6" r="4" fill="#C2185B"/>
-  <circle cx="932.0" cy="121.4" r="4" fill="#C2185B"/>
+  <circle cx="295.8" cy="163.6" r="4" fill="#C2185B"/>
+  <circle cx="507.9" cy="142.9" r="4" fill="#C2185B"/>
+  <circle cx="932.0" cy="121.7" r="4" fill="#C2185B"/>
   <line x1="88" y1="594" x2="116" y2="594" stroke="#455A64" stroke-width="3" stroke-dasharray="6 4"/>
   <circle cx="102" cy="594" r="4" fill="#455A64"/>
   <text x="126" y="598" class="legend">XAuth [6]</text>
@@ -77,5 +77,5 @@
   <line x1="733" y1="594" x2="761" y2="594" stroke="#C2185B" stroke-width="3"/>
   <circle cx="747" cy="594" r="4" fill="#C2185B"/>
   <text x="771" y="598" class="legend">SCAPE-ZK</text>
-  <text x="88" y="542" class="subtitle">T_zk^v=12.33 ms, T_pair=30.55 ms, T_grp=5.177 ms, T_hash=0.000454 ms</text>
+  <text x="88" y="542" class="subtitle">T_zk^v=12.47 ms, T_pair=31.93 ms, T_grp=5.451 ms, T_hash=0.000446 ms</text>
 </svg>

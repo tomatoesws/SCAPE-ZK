@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-ROOT = Path.home() / "scape-zk"
+ROOT = Path(__file__).resolve().parents[1]
 CSV = ROOT / "results" / "integrity_filesize_bench.csv"
 OUT = ROOT / "results" / "figures"
 OUT.mkdir(parents=True, exist_ok=True)

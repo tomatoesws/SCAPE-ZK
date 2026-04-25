@@ -25,7 +25,7 @@ from datetime import datetime, timezone
 
 from charm.toolbox.pairinggroup import PairingGroup, GT, G1, ZR, pair
 
-ROOT = Path.home() / "scape-zk"
+ROOT = Path(__file__).resolve().parents[1]
 CSV_OUT = ROOT / "results" / "pre_bench.csv"
 CSV_OUT.parent.mkdir(parents=True, exist_ok=True)
 

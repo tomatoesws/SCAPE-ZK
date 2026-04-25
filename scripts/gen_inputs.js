@@ -5,9 +5,8 @@
 const { buildPoseidon, buildEddsa, buildBabyjub } = require("circomlibjs");
 const fs = require("fs");
 const path = require("path");
-const os = require("os");
 
-const ROOT = path.join(os.homedir(), "scape-zk");
+const ROOT = path.resolve(__dirname, "..");
 const NUM_ATTRS = 10;  // must match SessionCPCP(10) in session.circom
 
 async function main() {

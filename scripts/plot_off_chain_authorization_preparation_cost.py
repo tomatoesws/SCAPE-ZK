@@ -11,11 +11,11 @@ This script is intentionally strict:
   - T_agg_overhead comes from either explicit input or a measured BLS aggregate fit.
 
 Examples:
-  ./.venv/bin/python scripts/plot_off_chain_authorization_preparation_cost.py \
+  python3 scripts/plot_off_chain_authorization_preparation_cost.py \
       --baseline scheme30 \
       --t-agg-source bls-aggregate-fit
 
-  ./.venv/bin/python scripts/plot_off_chain_authorization_preparation_cost.py \
+  python3 scripts/plot_off_chain_authorization_preparation_cost.py \
       --all-baselines \
       --t-agg-source bls-aggregate-fit \
       --n-max 150 \
@@ -35,7 +35,7 @@ import pandas as pd
 from matplotlib.ticker import FuncFormatter
 
 
-ROOT = Path.home() / "scape-zk"
+ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "results"
 FIGS = RESULTS / "figures"
 FIGS.mkdir(parents=True, exist_ok=True)

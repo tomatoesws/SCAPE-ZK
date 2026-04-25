@@ -21,7 +21,8 @@ COLORS = {
     "scape": "#ff8c00",
 }
 
-OUT = Path.home() / "scape-zk" / "results" / "figures"
+ROOT = Path(__file__).resolve().parents[1]
+OUT = ROOT / "results" / "figures"
 OUT.mkdir(parents=True, exist_ok=True)
 
 plt.rcParams.update({

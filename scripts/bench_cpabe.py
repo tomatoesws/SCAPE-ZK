@@ -20,7 +20,7 @@ from charm.toolbox.pairinggroup import PairingGroup, GT
 from charm.schemes.abenc.abenc_bsw07 import CPabe_BSW07
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 
-ROOT = Path.home() / "scape-zk"
+ROOT = Path(__file__).resolve().parents[1]
 CSV_OUT = ROOT / "results" / "cpabe_bench.csv"
 CSV_OUT.parent.mkdir(parents=True, exist_ok=True)
 

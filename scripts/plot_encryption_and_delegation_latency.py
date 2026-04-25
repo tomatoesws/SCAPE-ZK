@@ -22,7 +22,7 @@ import pandas as pd
 from matplotlib.ticker import FuncFormatter
 
 
-ROOT = Path.home() / "scape-zk"
+ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "results"
 FIGS = RESULTS / "figures"
 FIGS.mkdir(parents=True, exist_ok=True)

@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "bench:primitives": "node scripts/bench_primitives.js",
-    "compare:artifacts": "bash -lc 'MPLCONFIGDIR=/tmp/matplotlib ./.venv/bin/python scripts/plot_off_chain_authorization_preparation_cost.py --all-baselines --n-max 200 && MPLCONFIGDIR=/tmp/matplotlib ./.venv/bin/python scripts/plot_proof_verification_comparison.py && MPLCONFIGDIR=/tmp/matplotlib ./.venv/bin/python scripts/plot_integrity_verification_latency.py && MPLCONFIGDIR=/tmp/matplotlib ./.venv/bin/python scripts/plot_encryption_and_delegation_latency.py'",
+    "compare:artifacts": "bash -lc 'MPLCONFIGDIR=/tmp/matplotlib python3 scripts/plot_off_chain_authorization_preparation_cost.py --all-baselines --n-max 200 && MPLCONFIGDIR=/tmp/matplotlib python3 scripts/plot_proof_verification_comparison.py && MPLCONFIGDIR=/tmp/matplotlib python3 scripts/plot_integrity_verification_latency.py && MPLCONFIGDIR=/tmp/matplotlib python3 scripts/plot_encryption_and_delegation_latency.py'",
     "gen:inputs": "node scripts/gen_inputs.js",
     "test": "node scripts/gen_inputs.js"
   },

@@ -14,10 +14,10 @@ Generated files:
 
 Primitive calibration:
 
-- `T_zk^v`: 12.3335 ms, from `paper/results/groth16_bench.csv` request verification rows.
-- `T_pair`: 30.5452 ms, from `paper/results/bls_bench.csv` `pairing_only` rows.
-- `T_grp`: 5.1768 ms, derived from BLS aggregate verification residual `(verify_agg - T_pair) / n`.
-- `T_hash`: 0.00045380 ms, local SHA-256 metadata-leaf calibration.
+- `T_zk^v`: 12.4706 ms, from `paper/results/groth16_bench.csv` request verification rows.
+- `T_pair`: 31.9281 ms, from `paper/results/bls_bench.csv` `pairing_only` rows.
+- `T_grp`: 5.4515 ms, derived from BLS aggregate verification residual `(verify_agg - T_pair) / n`.
+- `T_hash`: 0.00044586 ms, local SHA-256 metadata-leaf calibration.
 
 Formula mapping used:
 

@@ -39,8 +39,8 @@ from xml.sax.saxutils import escape
 
 
 HERE = Path(__file__).resolve().parent
-PROJECT = HERE.parents[1]
-RESULTS = PROJECT / "paper" / "results"
+PROJECT = HERE.parent
+RESULTS = PROJECT / "results"
 OUT_CSV = HERE / "table_v_cost_components.csv"
 OUT_TOTAL_SVG = HERE / "table_v_total_cost_vs_requests.svg"
 OUT_BREAKDOWN_SVG = HERE / "table_v_cost_breakdown_100req.svg"
