@@ -25,10 +25,10 @@ T_PAIR = 20.0
 T_ZK_VERIFY = 25.0
 
 COLORS = {
-    "scape": "#2b6aa6",
-    "scheme30": "#f0ad00",
-    "xauth": "#c7493a",
-    "ssl": "#3aa34a",
+    "scape": "#1f5f9f",
+    "scheme30": "#e5a800",
+    "xauth": "#c94a3b",
+    "ssl": "#2ca02c",
     "grid": "#9aa0a6",
     "axis": "#111111",
     "bg": "#ffffff",
@@ -155,10 +155,10 @@ def write_svg(rows: list[dict[str, float | str]]) -> None:
     y_max = 1500.0
 
     style = {
-        "SCAPE-ZK": {"color": COLORS["scape"], "dash": "", "marker": "circle", "label": "SCAPE-ZK (O(1), T_pair)"},
-        "Scheme [30]": {"color": COLORS["scheme30"], "dash": "8 4", "marker": "square", "label": "Scheme [30] (O(n), agg-signature + group ops)"},
-        "XAuth [6]": {"color": COLORS["xauth"], "dash": "2 4", "marker": "triangle", "label": "XAuth [6] (O(n), nT_hash)"},
-        "SSL-XIoMT [8]": {"color": COLORS["ssl"], "dash": "10 4 2 4", "marker": "x", "label": "SSL-XIoMT [8] (O(n), nT_hash)"},
+        "SCAPE-ZK": {"color": COLORS["scape"], "dash": "", "marker": "circle", "label": "SCAPE-ZK (Ours)"},
+        "Scheme [30]": {"color": COLORS["scheme30"], "dash": "8 4", "marker": "square", "label": "Scheme [30]"},
+        "XAuth [6]": {"color": COLORS["xauth"], "dash": "2 4", "marker": "triangle", "label": "XAuth [6]"},
+        "SSL-XIoMT [8]": {"color": COLORS["ssl"], "dash": "10 4 2 4", "marker": "x", "label": "SSL-XIoMT [8]"},
     }
 
     by_scheme: dict[str, list[dict[str, float | str]]] = {}
@@ -176,7 +176,7 @@ def write_svg(rows: list[dict[str, float | str]]) -> None:
         "    .legend { font-size: 13px; }",
         "    .note { font-size: 12px; }",
         "  </style>",
-        f'  <text x="{width / 2:.1f}" y="45" text-anchor="middle" class="title">Normalized On-chain Authorization Verification Cost vs. Batch Size (n)</text>',
+        f'  <text x="{width / 2:.1f}" y="45" text-anchor="middle" class="title">On-chain Authorization Verification Cost</text>',
     ]
 
     parts.extend(draw_grid(left, top, plot_w, plot_h, y_min, y_max))
@@ -186,17 +186,18 @@ def write_svg(rows: list[dict[str, float | str]]) -> None:
     for power in range(0, 4):
         value = 10 ** power
         y = y_pos_log(value, top, plot_h, y_min, y_max)
-        parts.append(f'  <text x="{left - 14}" y="{y + 5:.1f}" text-anchor="end" class="tick">10^{power}</text>')
+        label = f"{value:,}"
+        parts.append(f'  <text x="{left - 14}" y="{y + 5:.1f}" text-anchor="end" class="tick">{label}</text>')
 
     for n in LOADS:
         x = x_pos(n, left, plot_w)
         parts.append(f'  <text x="{x:.1f}" y="{top + plot_h + 22}" text-anchor="middle" class="tick">{n}</text>')
 
     parts.append(
-        f'  <text x="{left + plot_w / 2:.1f}" y="{top + plot_h + 55}" text-anchor="middle" class="axis-label">Batch Size / Authorization Requests (n)</text>'
+        f'  <text x="{left + plot_w / 2:.1f}" y="{top + plot_h + 55}" text-anchor="middle" class="axis-label">Workload (Number of request)</text>'
     )
     parts.append(
-        f'  <text x="32" y="{top + plot_h / 2:.1f}" text-anchor="middle" class="axis-label" transform="rotate(-90 32 {top + plot_h / 2:.1f})">Normalized On-chain Verification Cost</text>'
+        f'  <text x="32" y="{top + plot_h / 2:.1f}" text-anchor="middle" class="axis-label" transform="rotate(-90 32 {top + plot_h / 2:.1f})">Verification cost</text>'
     )
 
     draw_order = ["SCAPE-ZK", "Scheme [30]", "XAuth [6]", "SSL-XIoMT [8]"]
@@ -222,13 +223,6 @@ def write_svg(rows: list[dict[str, float | str]]) -> None:
     legend_w = plot_w
     legend_h = 45
 
-    parts.append(
-        '  <text x="480" y="95" class="note">Scheme [30] is higher than XAuth/SSL-XIoMT because it adds</text>'
-    )
-    parts.append(
-        '  <text x="480" y="112" class="note">pairing/ZKP-related verification and linear group operations.</text>'
-    )
-    
     legend_rows = [
         "SCAPE-ZK",
         "Scheme [30]",
