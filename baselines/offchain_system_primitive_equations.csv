@@ -1,0 +1,5 @@
+graph,scheme,formula_ms,notes
+authorization_preparation,XAuth [6],"r*(2*Tpair + 4*Texp_G1 + 2*Tgrp + 3*Thash32)","no batching; r = number of requests"
+authorization_preparation,SSL-XIoMT [8],"r*(Tpair + 3*Texp_G1 + Tgrp + 2*Thash32)","no batching; r = number of requests"
+authorization_preparation,Scheme [26],"r*(2*Tpair + 4*Texp_G1 + Tgrp + Thash32)","primitive-calibrated linear preparation path; r = number of requests"
+cross_domain_delegation,Traditional Re-encryption,"mb*1024*(Tsym_dec_1KB + Tsym_enc_1KB)","decrypt-then-encrypt full payload; mb = file size in MB"

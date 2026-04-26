@@ -138,10 +138,9 @@ figure outputs under `results/figures/`.
 Individual plotting scripts can also be run directly:
 
 ```sh
-python3 scripts/plot_off_chain_authorization_preparation_cost.py --all-baselines --n-max 200
+python3 scripts/plot_offchain_system_winning_graphs.py
 python3 scripts/plot_proof_verification_comparison.py
 python3 scripts/plot_integrity_verification_latency.py
-python3 scripts/plot_encryption_and_delegation_latency.py
 ```
 
 ## Hyperledger Fabric Assets
@@ -174,10 +173,10 @@ Fabric test-network environment.
 
 Tracked result data is stored under `results/`. Main generated figures include:
 
-- `results/figures/off_chain_authorization_preparation_cost.pdf`
+- `results/figures/offchain_system/02_authorization_preparation_cost.png`
+- `results/figures/offchain_system/03_cross_domain_delegation_latency.png`
 - `results/figures/proof_verification_latency.pdf`
 - `results/figures/integrity_verification_latency.pdf`
-- `results/figures/delegation_latency.pdf`
 - `table_v_comparison/table_v_authorization_scalability.svg`
 - `table_v_computation_cost/table_v_total_cost_vs_requests.svg`
 - `table_v_computation_cost/table_v_cost_breakdown_100req.svg`
