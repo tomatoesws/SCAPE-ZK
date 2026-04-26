@@ -156,17 +156,16 @@ npm run compare:artifacts
 
 The main figures currently used in the report are:
 
-- [Off-Chain Authorization Preparation Cost](/home/tomato/scape-zk/results/figures/off_chain_authorization_preparation_cost.pdf)
+- [Off-Chain Authorization Preparation Cost](/home/tomato/scape-zk/results/figures/offchain_system/02_authorization_preparation_cost.pdf)
 - [Proof Verification Latency](/home/tomato/scape-zk/results/figures/proof_verification_latency.pdf)
 - [Integrity Verification Latency](/home/tomato/scape-zk/results/figures/integrity_verification_latency.pdf)
-- [Delegation Latency](/home/tomato/scape-zk/results/figures/delegation_latency.pdf)
+- [Delegation Latency](/home/tomato/scape-zk/results/figures/offchain_system/03_cross_domain_delegation_latency.pdf)
 
 The plotting scripts kept for the report figures are:
 
-- `scripts/plot_off_chain_authorization_preparation_cost.py --all-baselines --n-max 200`: off-chain authorization preparation cost
+- `scripts/plot_offchain_system_winning_graphs.py`: off-chain authorization and delegation cost
 - `scripts/plot_proof_verification_comparison.py`: proof verification latency
 - `scripts/plot_integrity_verification_latency.py`: integrity verification latency
-- `scripts/plot_encryption_and_delegation_latency.py`: delegation latency
 
 ## Troubleshooting
 

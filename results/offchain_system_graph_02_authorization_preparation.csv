@@ -1,0 +1,25 @@
+graph,scheme,requests,latency_ms,basis
+authorization_preparation,XAuth [6],1,33.477194812,r*(2*Tpair + 4*Texp_G1 + 2*Tgrp + 3*Thash32)
+authorization_preparation,XAuth [6],10,334.77194812,r*(2*Tpair + 4*Texp_G1 + 2*Tgrp + 3*Thash32)
+authorization_preparation,XAuth [6],50,1673.8597406000001,r*(2*Tpair + 4*Texp_G1 + 2*Tgrp + 3*Thash32)
+authorization_preparation,XAuth [6],100,3347.7194812000002,r*(2*Tpair + 4*Texp_G1 + 2*Tgrp + 3*Thash32)
+authorization_preparation,XAuth [6],200,6695.4389624000005,r*(2*Tpair + 4*Texp_G1 + 2*Tgrp + 3*Thash32)
+authorization_preparation,XAuth [6],500,16738.597406,r*(2*Tpair + 4*Texp_G1 + 2*Tgrp + 3*Thash32)
+authorization_preparation,SSL-XIoMT [8],1,17.516659359,r*(Tpair + 3*Texp_G1 + Tgrp + 2*Thash32)
+authorization_preparation,SSL-XIoMT [8],10,175.16659359,r*(Tpair + 3*Texp_G1 + Tgrp + 2*Thash32)
+authorization_preparation,SSL-XIoMT [8],50,875.8329679499999,r*(Tpair + 3*Texp_G1 + Tgrp + 2*Thash32)
+authorization_preparation,SSL-XIoMT [8],100,1751.6659358999998,r*(Tpair + 3*Texp_G1 + Tgrp + 2*Thash32)
+authorization_preparation,SSL-XIoMT [8],200,3503.3318717999996,r*(Tpair + 3*Texp_G1 + Tgrp + 2*Thash32)
+authorization_preparation,SSL-XIoMT [8],500,8758.329679499999,r*(Tpair + 3*Texp_G1 + Tgrp + 2*Thash32)
+authorization_preparation,Scheme [26],1,33.015910812,r*(2*Tpair + 4*Texp_G1 + Tgrp + Thash32)
+authorization_preparation,Scheme [26],10,330.15910812000004,r*(2*Tpair + 4*Texp_G1 + Tgrp + Thash32)
+authorization_preparation,Scheme [26],50,1650.7955406,r*(2*Tpair + 4*Texp_G1 + Tgrp + Thash32)
+authorization_preparation,Scheme [26],100,3301.5910812,r*(2*Tpair + 4*Texp_G1 + Tgrp + Thash32)
+authorization_preparation,Scheme [26],200,6603.1821624,r*(2*Tpair + 4*Texp_G1 + Tgrp + Thash32)
+authorization_preparation,Scheme [26],500,16507.955406,r*(2*Tpair + 4*Texp_G1 + Tgrp + Thash32)
+authorization_preparation,SCAPE-ZK (Ours),1,752.726,latest session prove_fullprove + latest request prove_fullprove; fixed-size batch circuit model
+authorization_preparation,SCAPE-ZK (Ours),10,752.726,latest session prove_fullprove + latest request prove_fullprove; fixed-size batch circuit model
+authorization_preparation,SCAPE-ZK (Ours),50,752.726,latest session prove_fullprove + latest request prove_fullprove; fixed-size batch circuit model
+authorization_preparation,SCAPE-ZK (Ours),100,752.726,latest session prove_fullprove + latest request prove_fullprove; fixed-size batch circuit model
+authorization_preparation,SCAPE-ZK (Ours),200,752.726,latest session prove_fullprove + latest request prove_fullprove; fixed-size batch circuit model
+authorization_preparation,SCAPE-ZK (Ours),500,752.726,latest session prove_fullprove + latest request prove_fullprove; fixed-size batch circuit model

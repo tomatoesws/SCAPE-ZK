@@ -25,21 +25,47 @@ OUT = ROOT / "results" / "figures"
 OUT.mkdir(parents=True, exist_ok=True)
 
 
-def latest_series(df: pd.DataFrame, scheme: str, operation: str) -> pd.DataFrame:
+def latest_complete_timestamp(df: pd.DataFrame, schemes: list[str], operation: str) -> pd.Timestamp:
+    rows = df[df["operation"] == operation].copy()
+    if rows.empty:
+        raise ValueError(f"Missing rows for operation={operation}")
+    rows["_ts"] = pd.to_datetime(rows["timestamp"], utc=True)
+    complete_batches = []
+    for ts, batch in rows.groupby("_ts"):
+        if set(schemes).issubset(set(batch["scheme"])):
+            complete_batches.append(ts)
+    if not complete_batches:
+        raise ValueError(
+            f"No complete {operation} batch found for schemes={', '.join(schemes)}"
+        )
+    return max(complete_batches)
+
+
+def series_for_timestamp(
+    df: pd.DataFrame,
+    scheme: str,
+    operation: str,
+    timestamp: pd.Timestamp,
+) -> pd.DataFrame:
     rows = df[(df["scheme"] == scheme) & (df["operation"] == operation)].copy()
     if rows.empty:
         raise ValueError(f"Missing rows for scheme={scheme}, operation={operation}")
     rows["_ts"] = pd.to_datetime(rows["timestamp"], utc=True)
-    latest_ts = rows["_ts"].max()
-    rows = rows[rows["_ts"] == latest_ts].sort_values("file_size_mb")
+    rows = rows[rows["_ts"] == timestamp].sort_values("file_size_mb")
+    if rows.empty:
+        raise ValueError(
+            f"Missing rows for scheme={scheme}, operation={operation}, timestamp={timestamp}"
+        )
     return rows
 
 
 def main() -> None:
     df = pd.read_csv(CSV)
-    xauth = latest_series(df, "xauth", "total")
-    ssl = latest_series(df, "ssl_xiomt", "total")
-    scape = latest_series(df, "scape_zk", "total")
+    schemes = ["xauth", "ssl_xiomt", "scape_zk"]
+    batch_ts = latest_complete_timestamp(df, schemes, "total")
+    xauth = series_for_timestamp(df, "xauth", "total", batch_ts)
+    ssl = series_for_timestamp(df, "ssl_xiomt", "total", batch_ts)
+    scape = series_for_timestamp(df, "scape_zk", "total", batch_ts)
 
     x = xauth["file_size_mb"].tolist()
     xauth_y = xauth["mean_ms"].tolist()
@@ -49,25 +75,24 @@ def main() -> None:
     plt.rcParams.update({
         "font.family": "serif",
         "font.size": 10,
-        "axes.labelsize": 10,
-        "axes.titlesize": 16,
-        "legend.fontsize": 9,
+        "axes.labelsize": 11,
+        "axes.titlesize": 12,
+        "legend.fontsize": 8.5,
         "figure.dpi": 200,
     })
 
-    fig, ax = plt.subplots(figsize=(8.8, 5.2))
-    ax.plot(x, xauth_y, color="#e41a1c", marker="s", linewidth=2.0, markersize=6.6,
-            markeredgecolor="black", markeredgewidth=0.6, label="XAuth [6]")
-    ax.plot(x, ssl_y, color="#1f77b4", marker="o", linewidth=2.0, markersize=6.6,
-            markeredgecolor="black", markeredgewidth=0.6, label="SSL-XIoMT [8]")
-    ax.plot(x, scape_y, color="#ff7f0e", marker="D", linewidth=2.2, markersize=6.8,
-            markeredgecolor="black", markeredgewidth=0.6, label="SCAPE-ZK (Ours)")
+    x_positions = list(range(len(x)))
+    fig, ax = plt.subplots(figsize=(11.4, 4.9))
+    ax.plot(x_positions, xauth_y, color="#e41a1c", linewidth=2.0, label="XAuth [6]")
+    ax.plot(x_positions, ssl_y, color="#1f77b4", linewidth=2.0, label="SSL-XIoMT [8]")
+    ax.plot(x_positions, scape_y, color="#ff7f0e", linewidth=2.2, label="SCAPE-ZK (Ours)")
 
     ax.set_title("Integrity Verification Latency", fontweight="bold", pad=14)
     ax.set_xlabel("EHR File Size (MB)")
     ax.set_ylabel("Integrity Verification Time (ms)")
-    ax.set_xticks(x)
-    ax.set_xlim(min(x) - 3, max(x) + 3)
+    ax.set_xticks(x_positions)
+    ax.set_xticklabels([str(value) for value in x])
+    ax.set_xlim(-0.25, len(x) - 0.75)
     y_max = max(max(xauth_y), max(ssl_y), max(scape_y))
     # Add visible space below the near-zero SCAPE-ZK line so it does not sit
     # directly on the bottom axis when plotted against much larger baselines.
@@ -75,15 +100,21 @@ def main() -> None:
     ax.set_ylim(-lower_pad, y_max * 1.08)
     ax.grid(True, alpha=0.28)
 
-    legend = ax.legend(loc="upper left", bbox_to_anchor=(1.02, 1.0), frameon=True,
-                       fancybox=True, framealpha=1.0, borderaxespad=0.0)
-    legend.get_frame().set_facecolor("white")
-    legend.get_frame().set_edgecolor("#cfcfcf")
-    legend.get_frame().set_linewidth(0.8)
+    handles, labels = ax.get_legend_handles_labels()
+    ax.legend(
+        handles,
+        labels,
+        loc="upper center",
+        bbox_to_anchor=(0.5, 0.985),
+        ncol=len(labels),
+        frameon=False,
+        columnspacing=1.25,
+        handlelength=2.6,
+    )
 
-    fig.subplots_adjust(left=0.14, right=0.80, top=0.88, bottom=0.16)
-    fig.savefig(OUT / "integrity_verification_latency.png", bbox_inches=None)
-    fig.savefig(OUT / "integrity_verification_latency.pdf", bbox_inches=None)
+    fig.tight_layout()
+    fig.savefig(OUT / "integrity_verification_latency.png")
+    fig.savefig(OUT / "integrity_verification_latency.pdf")
     plt.close(fig)
 
     print(f"Saved {OUT / 'integrity_verification_latency.png'}")
