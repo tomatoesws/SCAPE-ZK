@@ -4,7 +4,7 @@
 
 set -euo pipefail
 
-ROOT=~/scape-zk
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CIRCUITS="$ROOT/circuits"
 KEYS="$ROOT/keys"
 PTAU="$ROOT/ptau/powersOfTau28_hez_final_16.ptau"

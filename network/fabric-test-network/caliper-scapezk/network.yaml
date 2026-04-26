@@ -15,19 +15,19 @@ organizations:
       certificates:
         - name: Admin@org1.example.com
           clientPrivateKey:
-            path: /home/slotty666/researchpaper/network/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/priv_sk
+            path: ../organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/priv_sk
           clientSignedCert:
-            path: /home/slotty666/researchpaper/network/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem
+            path: ../organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem
     peers:
       - endpoint: localhost:7051
         tlsCACerts:
-          path: /home/slotty666/researchpaper/network/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+          path: ../organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
         grpcOptions:
           ssl-target-name-override: peer0.org1.example.com
           hostnameOverride: peer0.org1.example.com
       - endpoint: localhost:8051
         tlsCACerts:
-          path: /home/slotty666/researchpaper/network/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/ca.crt
+          path: ../organizations/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/ca.crt
         grpcOptions:
           ssl-target-name-override: peer1.org1.example.com
           hostnameOverride: peer1.org1.example.com
@@ -37,19 +37,19 @@ organizations:
       certificates:
         - name: Admin@org2.example.com
           clientPrivateKey:
-            path: /home/slotty666/researchpaper/network/fabric-samples/test-network/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/keystore/priv_sk
+            path: ../organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/keystore/priv_sk
           clientSignedCert:
-            path: /home/slotty666/researchpaper/network/fabric-samples/test-network/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/signcerts/Admin@org2.example.com-cert.pem
+            path: ../organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/signcerts/Admin@org2.example.com-cert.pem
     peers:
       - endpoint: localhost:9051
         tlsCACerts:
-          path: /home/slotty666/researchpaper/network/fabric-samples/test-network/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
+          path: ../organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
         grpcOptions:
           ssl-target-name-override: peer0.org2.example.com
           hostnameOverride: peer0.org2.example.com
       - endpoint: localhost:10051
         tlsCACerts:
-          path: /home/slotty666/researchpaper/network/fabric-samples/test-network/organizations/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls/ca.crt
+          path: ../organizations/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls/ca.crt
         grpcOptions:
           ssl-target-name-override: peer1.org2.example.com
           hostnameOverride: peer1.org2.example.com

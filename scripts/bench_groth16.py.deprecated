@@ -1,7 +1,7 @@
 import subprocess, time, statistics
 from pathlib import Path
 
-HOME = Path.home() / "scape-zk"
+HOME = Path(__file__).resolve().parents[1]
 
 def time_cmd(cmd, runs=10, warmup=1):
     """Run cmd N times, drop warmups, return (mean_ms, std_ms, all_times)."""

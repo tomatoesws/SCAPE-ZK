@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="620" viewBox="0 0 1080 620" role="img">
+  <rect width="100%" height="100%" fill="#FFFFFF"/>
+  <style>
+    text { font-family: Arial, Helvetica, sans-serif; fill: #222831; }
+    .title { font-size: 21px; font-weight: 700; }
+    .subtitle { font-size: 12px; fill: #66707A; }
+    .axis { font-size: 11px; fill: #66707A; }
+    .label { font-size: 12px; }
+    .value { font-size: 11px; font-weight: 700; }
+    .legend { font-size: 12px; }
+    .grid { stroke: #D8DDE3; stroke-width: 1; }
+    .axis-line { stroke: #9AA3AD; stroke-width: 1; }
+  </style>
+  <text x="92" y="38" class="title">Table V Off-Chain vs On-Chain Cost at n=100</text>
+  <text x="92" y="60" class="subtitle">Formula-derived comparison from source-paper verifier equations with shared local primitive calibration</text>
+  <text x="24" y="296.0" class="axis" transform="rotate(-90 24 296.0)">Estimated cost (ms, log scale)</text>
+  <line x1="92" y1="500.0" x2="1035" y2="500.0" class="grid"/>
+  <text x="80" y="504.0" text-anchor="end" class="axis">0.0100</text>
+  <line x1="92" y1="423.9" x2="1035" y2="423.9" class="grid"/>
+  <text x="80" y="427.9" text-anchor="end" class="axis">0.1000</text>
+  <line x1="92" y1="347.7" x2="1035" y2="347.7" class="grid"/>
+  <text x="80" y="351.7" text-anchor="end" class="axis">1.00</text>
+  <line x1="92" y1="271.6" x2="1035" y2="271.6" class="grid"/>
+  <text x="80" y="275.6" text-anchor="end" class="axis">10.0</text>
+  <line x1="92" y1="195.4" x2="1035" y2="195.4" class="grid"/>
+  <text x="80" y="199.4" text-anchor="end" class="axis">100</text>
+  <line x1="92" y1="119.3" x2="1035" y2="119.3" class="grid"/>
+  <text x="80" y="123.3" text-anchor="end" class="axis">1.00s</text>
+  <line x1="92" y1="500" x2="1035" y2="500" class="axis-line"/>
+  <line x1="92" y1="92" x2="92" y2="500" class="axis-line"/>
+  <rect x="134.0" y="111.9" width="86.6" height="388.1" rx="3" fill="#007C89"/>
+  <text x="177.3" y="103.9" text-anchor="middle" class="value">1.25s</text>
+  <text x="177.3" y="522" text-anchor="middle" class="axis">Off-chain</text>
+  <rect x="230.6" y="450.6" width="86.6" height="49.4" rx="3" fill="#D95F43"/>
+  <text x="273.9" y="442.6" text-anchor="middle" class="value">0.0446</text>
+  <text x="273.9" y="522" text-anchor="middle" class="axis">On-chain</text>
+  <text x="225.6" y="548" text-anchor="middle" class="label">XAuth [6]</text>
+  <rect x="359.2" y="111.9" width="86.6" height="388.1" rx="3" fill="#007C89"/>
+  <text x="402.6" y="103.9" text-anchor="middle" class="value">1.25s</text>
+  <text x="402.6" y="522" text-anchor="middle" class="axis">Off-chain</text>
+  <rect x="455.9" y="450.6" width="86.6" height="49.4" rx="3" fill="#D95F43"/>
+  <text x="499.2" y="442.6" text-anchor="middle" class="value">0.0446</text>
+  <text x="499.2" y="522" text-anchor="middle" class="axis">On-chain</text>
+  <text x="450.9" y="548" text-anchor="middle" class="label">SSL-XIoMT [8]</text>
+  <rect x="584.5" y="99.4" width="86.6" height="400.6" rx="3" fill="#007C89"/>
+  <text x="627.8" y="91.4" text-anchor="middle" class="value">1.82s</text>
+  <text x="627.8" y="522" text-anchor="middle" class="axis">Off-chain</text>
+  <rect x="681.1" y="450.6" width="86.6" height="49.4" rx="3" fill="#D95F43"/>
+  <text x="724.4" y="442.6" text-anchor="middle" class="value">0.0446</text>
+  <text x="724.4" y="522" text-anchor="middle" class="axis">On-chain</text>
+  <text x="676.1" y="548" text-anchor="middle" class="label">Scheme [30]</text>
+  <rect x="809.8" y="112.0" width="86.6" height="388.0" rx="3" fill="#007C89"/>
+  <text x="853.1" y="104.0" text-anchor="middle" class="value">1.25s</text>
+  <text x="853.1" y="522" text-anchor="middle" class="axis">Off-chain</text>
+  <rect x="906.4" y="233.2" width="86.6" height="266.8" rx="3" fill="#D95F43"/>
+  <text x="949.7" y="225.2" text-anchor="middle" class="value">31.9</text>
+  <text x="949.7" y="522" text-anchor="middle" class="axis">On-chain</text>
+  <text x="901.4" y="548" text-anchor="middle" class="label">SCAPE-ZK</text>
+  <rect x="92" y="575" width="13" height="13" rx="2" fill="#007C89"/>
+  <text x="112" y="586" class="legend">Off-chain Table V cost</text>
+  <rect x="312" y="575" width="13" height="13" rx="2" fill="#D95F43"/>
+  <text x="332" y="586" class="legend">On-chain Table V cost</text>
+</svg>
