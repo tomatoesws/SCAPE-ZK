@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="640" viewBox="0 0 1120 640" role="img">
+  <rect width="100%" height="100%" fill="#FFFFFF"/>
+  <style>
+    text { font-family: Arial, Helvetica, sans-serif; fill: #222831; }
+    .title { font-size: 21px; font-weight: 700; }
+    .subtitle { font-size: 12px; fill: #66707A; }
+    .axis { font-size: 11px; fill: #66707A; }
+    .label { font-size: 12px; }
+    .value { font-size: 11px; font-weight: 700; }
+    .legend { font-size: 12px; }
+    .grid { stroke: #D8DDE3; stroke-width: 1; }
+    .axis-line { stroke: #9AA3AD; stroke-width: 1; }
+  </style>
+  <text x="92" y="38" class="title">Table IV Cost Columns</text>
+  <text x="92" y="60" class="subtitle">n=50; one bar per Table IV computation-cost column</text>
+  <text x="24" y="302.0" class="axis" transform="rotate(-90 24 302.0)">Cost (ms)</text>
+  <line x1="92" y1="508.0" x2="1076" y2="508.0" class="grid"/>
+  <text x="80" y="512.0" text-anchor="end" class="axis">0.000</text>
+  <line x1="92" y1="425.6" x2="1076" y2="425.6" class="grid"/>
+  <text x="80" y="429.6" text-anchor="end" class="axis">215</text>
+  <line x1="92" y1="343.2" x2="1076" y2="343.2" class="grid"/>
+  <text x="80" y="347.2" text-anchor="end" class="axis">430</text>
+  <line x1="92" y1="260.8" x2="1076" y2="260.8" class="grid"/>
+  <text x="80" y="264.8" text-anchor="end" class="axis">644</text>
+  <line x1="92" y1="178.4" x2="1076" y2="178.4" class="grid"/>
+  <text x="80" y="182.4" text-anchor="end" class="axis">859</text>
+  <line x1="92" y1="96.0" x2="1076" y2="96.0" class="grid"/>
+  <text x="80" y="100.0" text-anchor="end" class="axis">1.07s</text>
+  <line x1="92" y1="508" x2="1076" y2="508" class="axis-line"/>
+  <line x1="92" y1="96" x2="92" y2="508" class="axis-line"/>
+  <rect x="144.0" y="459.8" width="31.4" height="48.2" rx="2" fill="#455A64"/>
+  <rect x="181.4" y="459.8" width="31.4" height="48.2" rx="2" fill="#007C89"/>
+  <rect x="256.2" y="503.2" width="31.4" height="4.8" rx="2" fill="#D95F43"/>
+  <rect x="293.6" y="508.0" width="31.4" height="0.0" rx="2" fill="#2F455C"/>
+  <text x="234.5" y="532" text-anchor="middle" class="label">XAuth [6]</text>
+  <rect x="377.0" y="158.8" width="31.4" height="349.2" rx="2" fill="#455A64"/>
+  <rect x="414.4" y="158.8" width="31.4" height="349.2" rx="2" fill="#007C89"/>
+  <rect x="451.8" y="462.9" width="31.4" height="45.1" rx="2" fill="#4C8B56"/>
+  <rect x="489.2" y="503.2" width="31.4" height="4.8" rx="2" fill="#D95F43"/>
+  <rect x="526.6" y="508.0" width="31.4" height="0.0" rx="2" fill="#2F455C"/>
+  <text x="467.5" y="532" text-anchor="middle" class="label">SSL-XIoMT [8]</text>
+  <rect x="610.0" y="459.8" width="31.4" height="48.2" rx="2" fill="#455A64"/>
+  <rect x="647.4" y="505.7" width="31.4" height="2.3" rx="2" fill="#007C89"/>
+  <rect x="722.2" y="500.9" width="31.4" height="7.1" rx="2" fill="#D95F43"/>
+  <rect x="759.6" y="508.0" width="31.4" height="0.0" rx="2" fill="#2F455C"/>
+  <text x="700.5" y="532" text-anchor="middle" class="label">Scheme [30]</text>
+  <rect x="843.0" y="459.8" width="31.4" height="48.2" rx="2" fill="#455A64"/>
+  <rect x="880.4" y="455.7" width="31.4" height="52.3" rx="2" fill="#007C89"/>
+  <rect x="917.8" y="462.9" width="31.4" height="45.1" rx="2" fill="#4C8B56"/>
+  <rect x="955.2" y="503.2" width="31.4" height="4.8" rx="2" fill="#D95F43"/>
+  <rect x="992.6" y="508.0" width="31.4" height="0.0" rx="2" fill="#2F455C"/>
+  <text x="933.5" y="532" text-anchor="middle" class="label">SCAPE-ZK</text>
+  <rect x="92" y="581" width="13" height="13" rx="2" fill="#455A64"/>
+  <text x="112" y="592" class="legend">Proof Gen</text>
+  <rect x="270" y="581" width="13" height="13" rx="2" fill="#007C89"/>
+  <text x="290" y="592" class="legend">Amortized</text>
+  <rect x="448" y="581" width="13" height="13" rx="2" fill="#4C8B56"/>
+  <text x="468" y="592" class="legend">Encrypt</text>
+  <rect x="626" y="581" width="13" height="13" rx="2" fill="#D95F43"/>
+  <text x="646" y="592" class="legend">Proof Ver</text>
+  <rect x="804" y="581" width="13" height="13" rx="2" fill="#2F455C"/>
+  <text x="824" y="592" class="legend">Integrity/Deleg.</text>
+</svg>

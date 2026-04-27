@@ -31,24 +31,24 @@
   <rect x="134.0" y="111.9" width="86.6" height="388.1" rx="3" fill="#007C89"/>
   <text x="177.3" y="103.9" text-anchor="middle" class="value">1.25s</text>
   <text x="177.3" y="522" text-anchor="middle" class="axis">Off-chain</text>
-  <rect x="230.6" y="450.6" width="86.6" height="49.4" rx="3" fill="#D95F43"/>
-  <text x="273.9" y="442.6" text-anchor="middle" class="value">0.0446</text>
+  <rect x="230.6" y="437.6" width="86.6" height="62.4" rx="3" fill="#D95F43"/>
+  <text x="273.9" y="429.6" text-anchor="middle" class="value">0.0660</text>
   <text x="273.9" y="522" text-anchor="middle" class="axis">On-chain</text>
   <text x="225.6" y="548" text-anchor="middle" class="label">XAuth [6]</text>
   <rect x="359.2" y="111.9" width="86.6" height="388.1" rx="3" fill="#007C89"/>
   <text x="402.6" y="103.9" text-anchor="middle" class="value">1.25s</text>
   <text x="402.6" y="522" text-anchor="middle" class="axis">Off-chain</text>
-  <rect x="455.9" y="450.6" width="86.6" height="49.4" rx="3" fill="#D95F43"/>
-  <text x="499.2" y="442.6" text-anchor="middle" class="value">0.0446</text>
+  <rect x="455.9" y="437.6" width="86.6" height="62.4" rx="3" fill="#D95F43"/>
+  <text x="499.2" y="429.6" text-anchor="middle" class="value">0.0660</text>
   <text x="499.2" y="522" text-anchor="middle" class="axis">On-chain</text>
   <text x="450.9" y="548" text-anchor="middle" class="label">SSL-XIoMT [8]</text>
   <rect x="584.5" y="99.4" width="86.6" height="400.6" rx="3" fill="#007C89"/>
   <text x="627.8" y="91.4" text-anchor="middle" class="value">1.82s</text>
   <text x="627.8" y="522" text-anchor="middle" class="axis">Off-chain</text>
-  <rect x="681.1" y="450.6" width="86.6" height="49.4" rx="3" fill="#D95F43"/>
-  <text x="724.4" y="442.6" text-anchor="middle" class="value">0.0446</text>
+  <rect x="681.1" y="437.6" width="86.6" height="62.4" rx="3" fill="#D95F43"/>
+  <text x="724.4" y="429.6" text-anchor="middle" class="value">0.0660</text>
   <text x="724.4" y="522" text-anchor="middle" class="axis">On-chain</text>
-  <text x="676.1" y="548" text-anchor="middle" class="label">Scheme [30]</text>
+  <text x="676.1" y="548" text-anchor="middle" class="label">IIoT SSI [30]</text>
   <rect x="809.8" y="112.0" width="86.6" height="388.0" rx="3" fill="#007C89"/>
   <text x="853.1" y="104.0" text-anchor="middle" class="value">1.25s</text>
   <text x="853.1" y="522" text-anchor="middle" class="axis">Off-chain</text>

@@ -1291,7 +1291,7 @@ In this section, we present a comparative analysis of our proposed framework aga
 
 \subsection{Functionality Comparison}
 
-We compare the functionality of \textbf{SCAPE-ZK} with representative schemes, namely XAuth~\cite{b6}, SSL-XIoMT~\cite{b8}, and Scheme~\cite{b30}. These schemes are selected due to their relevance in decentralized authentication and secure cross-domain data sharing for IoT, IIoT, and healthcare environments.
+We compare the functionality of \textbf{SCAPE-ZK} with representative schemes, namely XAuth~\cite{b6}, SSL-XIoMT~\cite{b8}, and the Cross-Domain Identity Authentication Scheme for the IIoT Identification Resolution System Based on Self-Sovereign Identity~\cite{b30} (abbreviated as the IIoT SSI identity-resolution scheme). These schemes are selected due to their relevance in decentralized authentication and secure cross-domain data sharing for IoT, IIoT, and healthcare environments.
 
 Table~\ref{tab:comparison} summarizes the comparison based on key functional properties required for practical and secure EHR sharing systems. The selected features capture essential aspects including privacy-preserving authentication, delegation capability, scalability, integrity assurance, and revocation support.
 
@@ -1308,7 +1308,7 @@ Scheme~\cite{b6} & $\checkmark$ & $\times$ & $\checkmark$ & $\times$ & $\times$ 
 \hline
 Scheme~\cite{b8} & $\checkmark$ & $\times$ & $\checkmark$ & $\times$ & $\times$ & $\times$ \\
 \hline
-Scheme~\cite{b30} & $\checkmark$ & $\times$ & $\checkmark$ & $\times$ & $\times$ & $\checkmark$ \\
+IIoT SSI~\cite{b30} & $\checkmark$ & $\times$ & $\checkmark$ & $\times$ & $\times$ & $\checkmark$ \\
 \hline
 \textbf{SCAPE-ZK} & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ \\
 \hline
@@ -1330,7 +1330,7 @@ As shown in Table~\ref{tab:comparison}, existing schemes provide only partial su
 
 XAuth~\cite{b6} and SSL-XIoMT~\cite{b8} both support privacy-preserving authentication using zero-knowledge proofs and leverage blockchain for access control. However, they lack efficient delegation mechanisms (e.g., proxy re-encryption), scalable authorization (such as batch or aggregate verification), and verifiable data integrity. In addition, their revocation mechanisms are limited and do not support efficient updates in highly dynamic environments.
 
-Scheme~\cite{b30} adopts a self-sovereign identity (SSI) framework integrated with blockchain to achieve decentralized and privacy-preserving authentication. It supports efficient batch authentication through aggregate signatures and enhances credential management via a threshold-based revocation and tracking mechanism. However, its design primarily focuses on identity authentication rather than secure data sharing. Specifically, it does not support delegation mechanisms such as proxy re-encryption, lacks verifiable data integrity guarantees for outsourced data, and does not provide scalable authorization mechanisms beyond authentication-level batching.
+The IIoT SSI identity-resolution scheme~\cite{b30} adopts a self-sovereign identity (SSI) framework integrated with blockchain to achieve decentralized and privacy-preserving authentication. It supports efficient batch authentication through aggregate signatures and enhances credential management via a threshold-based revocation and tracking mechanism. However, its design primarily focuses on identity authentication rather than secure data sharing. Specifically, it does not support delegation mechanisms such as proxy re-encryption, lacks verifiable data integrity guarantees for outsourced data, and does not provide scalable authorization mechanisms beyond authentication-level batching.
 
 In contrast, SCAPE-ZK is the only scheme that simultaneously supports all considered functionalities within a unified framework. It integrates privacy-preserving authentication with an efficient delegation mechanism, enables scalable authorization via proof aggregation, and ensures verifiable data integrity through cryptographic proofs. Furthermore, it provides an efficient revocation mechanism that avoids costly data re-encryption and supports dynamic updates.
 
@@ -1389,7 +1389,7 @@ SSL-XIoMT~\cite{b8}
 & $T_{\mathsf{merk}} + T_{\mathsf{hash}}$ \\
 \hline
 
-Scheme~\cite{b30}
+IIoT SSI~\cite{b30}
 & $T_{\mathsf{zk}}^{g}$
 & $\displaystyle T_{\mathsf{zk}}^{g} + \frac{\mathcal{O}(T_{\mathsf{pair}} + nT_{\mathsf{grp}})}{n}$
 & $--$
@@ -1424,7 +1424,7 @@ SSL-XIoMT~\cite{b8}
 & $n \cdot T_{\mathsf{zk}}^{v}$
 & $n \cdot T_{\mathsf{hash}}$ \\
 \hline
-Scheme~\cite{b30}
+IIoT SSI~\cite{b30}
 & $T_{\mathsf{zk}}^{v} + \mathcal{O}(T_{\mathsf{pair}} + n \cdot T_{\mathsf{grp}})$
 & $n \cdot T_{\mathsf{hash}}$ \\
 \hline
@@ -1436,7 +1436,7 @@ Scheme~\cite{b30}
 \end{table}
 
 
-We evaluate the computational cost of SCAPE-ZK against XAuth~\cite{b6}, SSL-XIoMT~\cite{b8}, and Scheme~\cite{b30}, focusing on the online access workflow, including authentication, authorization, and secure data retrieval. The analysis decomposes costs into fundamental cryptographic operations and distinguishes between per-request overhead and system-level scalability.
+We evaluate the computational cost of SCAPE-ZK against XAuth~\cite{b6}, SSL-XIoMT~\cite{b8}, and the IIoT SSI identity-resolution scheme~\cite{b30}, focusing on the online access workflow, including authentication, authorization, and secure data retrieval. The analysis decomposes costs into fundamental cryptographic operations and distinguishes between per-request overhead and system-level scalability.
 
 
 
@@ -1445,17 +1445,56 @@ Table~\ref{tab:cost-unified} compares the per-request computational cost across 
 
 XAuth and SSL-XIoMT primarily rely on zero-knowledge proofs, and their computational cost is dominated by proof generation complexity, which scales with the size of the constraint system (e.g., identity or attribute circuits). As a result, both schemes incur consistent per-request overhead without benefiting from amortization.
 
-In contrast, Scheme~\cite{b30} adopts an SSI-based authentication model that combines zero-knowledge proofs with aggregate signature verification over bilinear pairings. Its verification cost consists of two components: (i) $T_{\mathsf{zk}}^{v}$ for proof verification, and (ii) pairing-based and group operations modeled as $\mathcal{O}(T_{\mathsf{pair}} + n \cdot T_{\mathsf{grp}})$. Although batch authentication reduces the number of pairing evaluations to a constant, the overall cost still grows linearly with the number of aggregated requests due to the required group exponentiations and scalar multiplications. Consequently, its amortized cost improves only partially and remains dependent on the batch size.
+In contrast, the IIoT SSI identity-resolution scheme~\cite{b30} adopts an SSI-based authentication model that combines zero-knowledge proofs with aggregate signature verification over bilinear pairings. Its verification cost consists of two components: (i) $T_{\mathsf{zk}}^{v}$ for proof verification, and (ii) pairing-based and group operations modeled as $\mathcal{O}(T_{\mathsf{pair}} + n \cdot T_{\mathsf{grp}})$. Although batch authentication reduces the number of pairing evaluations to a constant, the overall cost still grows linearly with the number of aggregated requests due to the required group exponentiations and scalar multiplications. Consequently, its amortized cost improves only partially and remains dependent on the batch size.
 
 SCAPE-ZK differs fundamentally by introducing a proof amortization strategy at the authorization level. While it incurs higher initial proof generation cost due to richer policy constraints, this cost is shared across multiple requests within a session. As reflected in Table~\ref{tab:cost-unified}, the amortized proof cost decreases proportionally with $n$, making SCAPE-ZK significantly more efficient in repeated-access or session-based scenarios.
 
-From an encryption perspective, SCAPE-ZK employs a hybrid symmetric and CP-ABE design while eliminating ECC-based key exchange and avoiding pairing-based cryptographic operations during the online phase. This results in a more lightweight and practical execution model compared to SSL-XIoMT and Scheme~\cite{b30}.
+From an encryption perspective, SCAPE-ZK employs a hybrid symmetric and CP-ABE design while eliminating ECC-based key exchange and avoiding pairing-based cryptographic operations during the online phase. This results in a more lightweight and practical execution model compared to SSL-XIoMT and the IIoT SSI identity-resolution scheme~\cite{b30}.
 
-While Table~\ref{tab:cost-unified} focuses on per-request overhead, Table~\ref{tab:scalability} highlights system-level scalability. XAuth and SSL-XIoMT incur linear verification cost $n \cdot T_{\mathsf{zk}}^{v}$ due to independent verification of each request. Scheme~\cite{b30} improves efficiency through batch authentication; however, its total verification cost remains linear due to aggregation overhead and group operations, limiting scalability under high concurrency.
+While Table~\ref{tab:cost-unified} focuses on per-request overhead, Table~\ref{tab:scalability} highlights system-level scalability. XAuth and SSL-XIoMT incur linear verification cost $n \cdot T_{\mathsf{zk}}^{v}$ due to independent verification of each request. The IIoT SSI identity-resolution scheme~\cite{b30} improves efficiency through batch authentication; however, its total verification cost remains linear due to aggregation overhead and group operations, limiting scalability under high concurrency.
 
 In contrast, SCAPE-ZK enables proof-carrying aggregate authorization, allowing multiple requests to be verified collectively using a constant number of pairing operations. This reduces on-chain verification from $\mathcal{O}(n)$ to $\mathcal{O}(1)$, significantly improving scalability.
 
+To quantify this scalability trend, we instantiate the on-chain terms in Table~\ref{tab:scalability} using locally measured primitive timings rather than arbitrary normalized constants. The primitive calibration gives $T_{\mathsf{hash}}=0.002215$ ms for SHA-256 over a compact metadata input, $T_{\mathsf{grp}}=0.456854$ ms for a BLS12-381 group operation, $T_{\mathsf{pair}}=14.724512$ ms for a BLS12-381 pairing, and $T_{\mathsf{zk}}^{v}=13.293$ ms for Groth16 request-proof verification. Under this primitive-calibrated Table~\ref{tab:scalability} model, SCAPE-ZK remains constant at $14.724512$ ms for each aggregate authorization batch, while XAuth and SSL-XIoMT grow linearly as $nT_{\mathsf{hash}}$ and the IIoT SSI identity-resolution scheme grows linearly with additional ZKP, pairing, and group-operation terms. Because hashing is substantially cheaper than a pairing, the hash-only baselines are lower at small $n$; however, SCAPE-ZK crosses below the $nT_{\mathsf{hash}}$ model after approximately $6{,}648$ aggregated requests and remains lower across high-concurrency hospital-network workloads from $n=10{,}000$ to $n=50{,}000$. These values are primitive-calibrated analytical costs derived from Table~\ref{tab:scalability}, not full reimplementations of the baseline systems.
+
 Overall, combining insights from both tables, SCAPE-ZK strategically shifts computational complexity toward client-side proof generation while achieving constant-cost verification at the system level. This design provides a balanced trade-off between computation and scalability, making it particularly suitable for large-scale, high-concurrency environments such as cross-domain EHR sharing.
+
+\subsection{Blockchain Performance Analysis}
+
+In this section, we evaluate the blockchain-layer performance of SCAPE-ZK using the deployed Hyperledger Fabric test network. Following the performance-analysis style used by SSL-XIoMT~\cite{b8}, the experiment reports the measured runtime behavior of each implemented operation and then explains the graph trend rather than introducing synthetic values. The benchmark focuses on the ledger-facing part of SCAPE-ZK: registering encrypted EHR metadata, recording proof-verification outcomes, revoking users, updating credential state, and querying whether a record exists.
+
+The SCAPE-ZK smart contract was implemented in Go using the Hyperledger Fabric Contract API for Go. The benchmark workload was written in JavaScript for Hyperledger Caliper and executed through Node.js. The result-processing scripts used Python; the locked throughput figure was generated from the Caliper summary CSV using Matplotlib, while auxiliary SVG summaries were produced from the same CSV using Python standard libraries such as \texttt{csv}, \texttt{pathlib}, and XML escaping utilities. No baseline TPS values were fabricated: all throughput and latency values reported in this subsection are taken from the ten logged Caliper trials in the repeated benchmark result set.
+
+Each operation was evaluated at 100, 500, and 1000 submitted transactions. One warm-up run was excluded from the reported statistics, after which the full benchmark was repeated ten times. The reported values are the mean and sample standard deviation across those ten trials. Across all operation/load combinations, the benchmark completed with zero failed transactions.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig_fabric_tps_vs_load.png}
+\caption{SCAPE-ZK Fabric throughput versus submitted transaction load. The graph is generated from ten Hyperledger Caliper trials and includes the four ledger write operations: Register, VerifyProof, Revoke, and UpdateCred.}
+\label{fig:fabric-tps-load}
+\end{figure}
+
+As shown in Fig.~\ref{fig:fabric-tps-load}, the four write operations follow a similar scaling pattern as the submitted load increases. At 100 transactions, the write throughput is approximately 19--20 TPS: Register reaches $19.34 \pm 3.26$ TPS, VerifyProof reaches $20.07 \pm 3.30$ TPS, Revoke reaches $19.87 \pm 3.03$ TPS, and UpdateCred reaches $20.28 \pm 1.49$ TPS. At 500 transactions, the same operations increase to approximately 131 TPS, with Register at $131.33 \pm 2.51$ TPS, VerifyProof at $130.99 \pm 4.93$ TPS, Revoke at $130.83 \pm 4.76$ TPS, and UpdateCred at $131.65 \pm 5.06$ TPS. At 1000 transactions, the write operations remain closely grouped: Register reaches $215.15 \pm 14.24$ TPS, VerifyProof reaches $221.19 \pm 8.03$ TPS, Revoke reaches $221.20 \pm 13.61$ TPS, and UpdateCred reaches $221.56 \pm 10.47$ TPS.
+
+This graph indicates that the measured Fabric deployment scales upward over the tested load range without shifting the bottleneck to one specific SCAPE-ZK write function. The four write functions have similar throughput because they all follow the same Fabric transaction path: proposal execution, endorsement, ordering, validation, commit, and world-state update. Their chaincode logic writes compact metadata or status records, so the measured difference among Register, VerifyProof, Revoke, and UpdateCred is small compared with the common cost of the Fabric transaction pipeline.
+
+The read-only RecordExists query is not included in Fig.~\ref{fig:fabric-tps-load} because it does not follow the same write-transaction path. Its measured throughput is higher: $112.98 \pm 1.41$ TPS at 100 transactions, $447.05 \pm 15.10$ TPS at 500 transactions, and $702.38 \pm 38.86$ TPS at 1000 transactions. This result is expected because RecordExists avoids ordering, validation, commit, and world-state update overhead. The separation between read and write performance supports the intended SCAPE-ZK design, where expensive cryptographic work is performed off-chain and the blockchain stores compact authorization, revocation, and audit state.
+
+Average latency also remains low at the 1000-transaction load. Register records $89 \pm 12$ ms, VerifyProof records $87 \pm 7$ ms, Revoke records $86 \pm 8$ ms, and UpdateCred records $92 \pm 8$ ms. RecordExists completes in $10 \pm 0$ ms on average. These values show that the tested Fabric deployment can sustain hundreds of SCAPE-ZK ledger write operations per second while keeping average write latency below 100 ms at the highest tested load.
+
+The VerifyProof result should be interpreted carefully. In the current prototype, the Fabric chaincode records a proof-verification or aggregate-authorization result as ledger state; it does not execute full Groth16 proof verification or BLS aggregate-signature verification inside chaincode. Therefore, the VerifyProof throughput and latency reported here measure the blockchain transaction cost of anchoring the verification outcome. End-to-end authorization latency must additionally include the off-chain cryptographic operations evaluated in the computation-cost analysis.
+
+\subsection{Blockchain Deployment}
+
+SCAPE-ZK was deployed on Hyperledger Fabric because the target healthcare scenario is a permissioned consortium rather than an anonymous public-chain environment. Hospitals, clinics, laboratories, insurers, and regulators can be represented as known consortium participants with managed identities. Fabric provides membership management, endorsement policies, channel-based isolation, deterministic chaincode execution, and an auditable world state, which match the trust and compliance requirements of cross-domain EHR sharing.
+
+The deployed SCAPE-ZK chaincode exposes five benchmarked functions. Register anchors encrypted EHR metadata, including the content identifier, Merkle root, binding tag, policy digest, owner, and transaction timestamp. VerifyProof records an approved proof or aggregate-authorization context using the context identifier, batch identifier, and aggregate signature field. Revoke updates revocation state, UpdateCred changes credential state, and RecordExists checks whether a ledger key is present. The implementation is intentionally compact: it stores and updates authorization state but does not place large EHR files or expensive cryptographic proving work on-chain.
+
+This deployment follows the SCAPE-ZK system division. Zero-knowledge proof generation, CP-ABE encryption, proxy re-encryption, Merkle proof construction, and aggregate-authentication processing are handled by off-chain clients or service components. Fabric is used to preserve the shared state that must be consistent across domains, including registration records, authorization outcomes, revocation visibility, credential updates, and audit evidence. This division reduces chaincode computation while keeping the blockchain useful for tamper-evident coordination among healthcare domains.
+
+The deployment results complement the analytical scalability comparison, but they are not a direct TPS comparison against XAuth, SSL-XIoMT, or the IIoT SSI identity-resolution scheme. A direct numeric TPS comparison would require implementing each baseline in the same Fabric/Caliper environment under the same endorsement policy, transaction mix, hardware, and load profile. Since those full baseline deployments were not implemented in this workspace, this paper does not report fabricated baseline blockchain throughput. The contribution of the deployment experiment is instead to show that the SCAPE-ZK blockchain interface runs repeatedly on a realistic permissioned ledger stack with zero failed transactions in the tested workload.
+
+Overall, the blockchain experiment supports the practical deployment claim of SCAPE-ZK. The system keeps heavyweight cryptographic operations off-chain while using a consortium ledger for compact authorization state, revocation, consistency, and auditability. The measured write-operation range of approximately 215--222 TPS at 1000 submitted transactions, together with sub-100 ms average write latency, indicates that the implemented blockchain layer is practical for anchoring SCAPE-ZK state transitions in the tested local Fabric environment.
 
 
 \begin{thebibliography}{00}

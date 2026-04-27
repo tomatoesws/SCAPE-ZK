@@ -3,7 +3,11 @@
 
 The figure is intentionally scoped to on-chain authorization verification only.
 It mirrors the example chart format: serif typography, log-scale y-axis,
-dense horizontal grid, in-plot legend, and the same marker/line palette.
+dense horizontal grid, categorical x-axis spacing, and the same line palette.
+
+The costs are primitive-calibrated milliseconds. They are not full protocol
+reimplementations of the baselines; they instantiate the Table V formulas with
+locally measured primitive timings.
 """
 
 from __future__ import annotations
@@ -15,14 +19,18 @@ from xml.sax.saxutils import escape
 
 
 ROOT = Path(__file__).resolve().parent
-OUT_CSV = ROOT / "table_v_normalized_cost.csv"
+RESULTS = ROOT.parent / "results"
+PRIMITIVE_CSV = RESULTS / "primitive_microbench.csv"
+GROTH16_CSV = RESULTS / "groth16_bench.csv"
+OUT_CSV = ROOT / "table_v_primitive_calibrated_cost.csv"
 OUT_SVG = ROOT / "table_v_authorization_scalability.svg"
 
-LOADS = [1, 10, 50, 100, 200]
-T_HASH = 1.0
-T_GRP = 5.0
-T_PAIR = 20.0
-T_ZK_VERIFY = 25.0
+LOADS = [1, 10, 50, 100, 200, 1000, 5000, 10000, 20000, 50000]
+IIOT_SSI_NAME = (
+    "Cross-Domain Identity Authentication Scheme for the IIoT Identification "
+    "Resolution System Based on Self-Sovereign Identity [30]"
+)
+IIOT_SSI_LABEL = "IIoT SSI Identity Resolution [30]"
 
 COLORS = {
     "scape": "#e5a800",
@@ -37,33 +45,83 @@ COLORS = {
 }
 
 SCHEMES = [
-    ("SCAPE-ZK", "T_pair", "Constant aggregate on-chain verification"),
-    ("Scheme [30]", "T_zk_verify + T_pair + n*T_grp + n*T_hash", "Aggregate-signature verification plus linear group operations"),
-    ("XAuth [6]", "n*T_hash", "Linear hash/check cost"),
-    ("SSL-XIoMT [8]", "n*T_hash", "Linear hash/check cost"),
+    ("SCAPE-ZK", "T_pair", "Constant aggregate on-chain verification", "formula_derived"),
+    (IIOT_SSI_NAME, "T_zk_verify + T_pair + n*T_grp + n*T_hash", "Aggregate-signature verification plus linear group operations", "formula_derived"),
+    ("XAuth [6]", "n*T_hash", "Linear hash/check cost", "formula_derived"),
+    ("SSL-XIoMT [8]", "n*T_hash", "Linear hash/check cost", "formula_derived"),
 ]
 
-def onchain_cost(scheme: str, n: int) -> float:
+
+def latest_matching_value(path: Path, filters: dict[str, str], value_col: str = "mean_ms") -> float:
+    matches: list[dict[str, str]] = []
+    with path.open(newline="", encoding="utf-8") as handle:
+        reader = csv.DictReader(handle)
+        for row in reader:
+            if all(row.get(key) == value for key, value in filters.items()):
+                matches.append(row)
+    if not matches:
+        raise ValueError(f"No rows in {path} match {filters}")
+    matches.sort(key=lambda row: row.get("timestamp", ""))
+    return float(matches[-1][value_col])
+
+
+def primitive_value(name: str) -> float:
+    with PRIMITIVE_CSV.open(newline="", encoding="utf-8") as handle:
+        reader = csv.DictReader(handle)
+        rows = [row for row in reader if row["primitive"] == name]
+    if not rows:
+        raise ValueError(f"No primitive row named {name!r} in {PRIMITIVE_CSV}")
+    rows.sort(key=lambda row: row.get("timestamp", ""))
+    return float(rows[-1]["mean_ms"])
+
+
+def measured_terms() -> dict[str, float]:
+    return {
+        "T_hash_ms": primitive_value("Thash (SHA-256, 32B input)"),
+        "T_grp_ms": primitive_value("Tgrp (BLS12-381 G1 scalar multiplication)"),
+        "T_pair_ms": primitive_value("Tpair (BLS12-381 bilinear pairing)"),
+        "T_zk_verify_ms": latest_matching_value(
+            GROTH16_CSV,
+            {"circuit": "request", "metric": "verify"},
+        ),
+    }
+
+
+def onchain_cost(scheme: str, n: int, terms: dict[str, float]) -> float:
     if scheme == "SCAPE-ZK":
-        return T_PAIR
+        return terms["T_pair_ms"]
     if scheme in ["XAuth [6]", "SSL-XIoMT [8]"]:
-        return n * T_HASH
-    if scheme == "Scheme [30]":
-        return T_ZK_VERIFY + T_PAIR + n * T_GRP + n * T_HASH
+        return n * terms["T_hash_ms"]
+    if scheme == IIOT_SSI_NAME:
+        return (
+            terms["T_zk_verify_ms"]
+            + terms["T_pair_ms"]
+            + n * terms["T_grp_ms"]
+            + n * terms["T_hash_ms"]
+        )
     raise ValueError(f"Unknown scheme: {scheme}")
 
 
 def table_rows() -> list[dict[str, float | str]]:
+    terms = measured_terms()
     rows: list[dict[str, float | str]] = []
     for n in LOADS:
-        for scheme, table_v_term, interpretation in SCHEMES:
+        for scheme, table_v_term, interpretation, basis in SCHEMES:
             rows.append(
                 {
                     "n_requests": n,
                     "scheme": scheme,
                     "table_v_onchain_term": table_v_term,
                     "interpretation": interpretation,
-                    "authorization_verification_cost": onchain_cost(scheme, n),
+                    "basis": basis,
+                    "authorization_verification_cost_ms": onchain_cost(scheme, n, terms),
+                    "T_hash_ms": terms["T_hash_ms"],
+                    "T_grp_ms": terms["T_grp_ms"],
+                    "T_pair_ms": terms["T_pair_ms"],
+                    "T_zk_verify_ms": terms["T_zk_verify_ms"],
+                    "source_file": "results/primitive_microbench.csv; results/groth16_bench.csv",
+                    "source_filter_or_formula": table_v_term,
+                    "notes": "Table V on-chain authorization-verification formula instantiated with local primitive measurements; not an end-to-end baseline runtime.",
                 }
             )
     return rows
@@ -78,7 +136,15 @@ def write_csv(rows: list[dict[str, float | str]]) -> None:
                 "scheme",
                 "table_v_onchain_term",
                 "interpretation",
-                "authorization_verification_cost",
+                "basis",
+                "authorization_verification_cost_ms",
+                "T_hash_ms",
+                "T_grp_ms",
+                "T_pair_ms",
+                "T_zk_verify_ms",
+                "source_file",
+                "source_filter_or_formula",
+                "notes",
             ],
         )
         writer.writeheader()
@@ -86,9 +152,8 @@ def write_csv(rows: list[dict[str, float | str]]) -> None:
 
 
 def x_pos(n: int, left: int, width: int) -> float:
-    min_n = LOADS[0]
-    max_n = LOADS[-1]
-    return left + ((n - min_n) / (max_n - min_n)) * width
+    x_indices = {load: idx for idx, load in enumerate(LOADS)}
+    return left + (x_indices[n] / (len(LOADS) - 1)) * width
 
 
 def y_pos_log(value: float, top: int, height: int, y_min: float, y_max: float) -> float:
@@ -97,28 +162,6 @@ def y_pos_log(value: float, top: int, height: int, y_min: float, y_max: float) -
     log_value = math.log10(max(value, y_min))
     frac = (log_value - log_min) / (log_max - log_min)
     return top + height - frac * height
-
-
-def marker_svg(marker: str, x: float, y: float, color: str) -> str:
-    stroke = "#1b1b1b"
-    if marker == "circle":
-        return f'  <circle cx="{x:.1f}" cy="{y:.1f}" r="5" fill="{color}" stroke="{stroke}" stroke-width="1"/>'
-    if marker == "square":
-        return f'  <rect x="{x - 5:.1f}" y="{y - 5:.1f}" width="10" height="10" fill="{color}" stroke="{stroke}" stroke-width="1"/>'
-    if marker == "diamond":
-        points = f"{x:.1f},{y - 6:.1f} {x - 6:.1f},{y:.1f} {x:.1f},{y + 6:.1f} {x + 6:.1f},{y:.1f}"
-        return f'  <polygon points="{points}" fill="{color}" stroke="{stroke}" stroke-width="1"/>'
-    if marker == "triangle":
-        points = f"{x:.1f},{y - 6:.1f} {x - 6:.1f},{y + 5:.1f} {x + 6:.1f},{y + 5:.1f}"
-        return f'  <polygon points="{points}" fill="{color}" stroke="{stroke}" stroke-width="1"/>'
-    if marker == "x":
-        return (
-            f'  <line x1="{x - 5:.1f}" y1="{y - 5:.1f}" x2="{x + 5:.1f}" y2="{y + 5:.1f}" '
-            f'stroke="{color}" stroke-width="2"/>'
-            f'\n  <line x1="{x - 5:.1f}" y1="{y + 5:.1f}" x2="{x + 5:.1f}" y2="{y - 5:.1f}" '
-            f'stroke="{color}" stroke-width="2"/>'
-        )
-    raise ValueError(f"Unsupported marker: {marker}")
 
 
 def draw_grid(left: int, top: int, width: int, height: int, y_min: float, y_max: float) -> list[str]:
@@ -148,20 +191,20 @@ def draw_grid(left: int, top: int, width: int, height: int, y_min: float, y_max:
 
 
 def write_svg(rows: list[dict[str, float | str]]) -> None:
-    width = 1000
+    width = 1120
     height = 680
     left = 124
     top = 72
-    plot_w = 777
+    plot_w = 690
     plot_h = 462
-    y_min = 0.8
-    y_max = 1500.0
+    y_min = 0.001
+    y_max = 30000.0
 
     style = {
-        "SCAPE-ZK": {"color": COLORS["scape"], "dash": "", "marker": "diamond", "label": "SCAPE-ZK (Ours)"},
-        "Scheme [30]": {"color": COLORS["scheme30"], "dash": "8 4", "marker": "triangle", "label": "Scheme [30]"},
-        "XAuth [6]": {"color": COLORS["xauth"], "dash": "2 4", "marker": "square", "label": "XAuth [6]"},
-        "SSL-XIoMT [8]": {"color": COLORS["ssl"], "dash": "10 4 2 4", "marker": "circle", "label": "SSL-XIoMT [8]"},
+        "SCAPE-ZK": {"color": COLORS["scape"], "dash": "", "label": "SCAPE-ZK (Ours)"},
+        IIOT_SSI_NAME: {"color": COLORS["scheme30"], "dash": "8 4", "label": IIOT_SSI_LABEL},
+        "XAuth [6]": {"color": COLORS["xauth"], "dash": "10 4 2 4", "label": "XAuth [6]"},
+        "SSL-XIoMT [8]": {"color": COLORS["ssl"], "dash": "2 4", "label": "SSL-XIoMT [8]"},
     }
 
     by_scheme: dict[str, list[dict[str, float | str]]] = {}
@@ -186,10 +229,12 @@ def write_svg(rows: list[dict[str, float | str]]) -> None:
 
     parts.append(f'  <rect x="{left}" y="{top}" width="{plot_w}" height="{plot_h}" fill="none" stroke="{COLORS["axis"]}" stroke-width="1"/>')
 
-    for power in range(0, 4):
+    for power in range(-3, 3):
         value = 10 ** power
+        if value < y_min or value > y_max:
+            continue
         y = y_pos_log(value, top, plot_h, y_min, y_max)
-        label = f"{value:,}"
+        label = f"{value:g}"
         parts.append(f'  <text x="{left - 14}" y="{y + 5:.1f}" text-anchor="end" class="tick">{label}</text>')
 
     for n in LOADS:
@@ -197,19 +242,19 @@ def write_svg(rows: list[dict[str, float | str]]) -> None:
         parts.append(f'  <text x="{x:.1f}" y="{top + plot_h + 22}" text-anchor="middle" class="tick">{n}</text>')
 
     parts.append(
-        f'  <text x="{left + plot_w / 2:.1f}" y="{top + plot_h + 55}" text-anchor="middle" class="axis-label">Workload (Number of request)</text>'
+        f'  <text x="{left + plot_w / 2:.1f}" y="{top + plot_h + 55}" text-anchor="middle" class="axis-label">Workload (Number of requests)</text>'
     )
     parts.append(
-        f'  <text x="32" y="{top + plot_h / 2:.1f}" text-anchor="middle" class="axis-label" transform="rotate(-90 32 {top + plot_h / 2:.1f})">Verification cost</text>'
+        f'  <text x="32" y="{top + plot_h / 2:.1f}" text-anchor="middle" class="axis-label" transform="rotate(-90 32 {top + plot_h / 2:.1f})">Verification cost (ms)</text>'
     )
 
-    draw_order = ["SCAPE-ZK", "Scheme [30]", "XAuth [6]", "SSL-XIoMT [8]"]
+    draw_order = ["SCAPE-ZK", IIOT_SSI_NAME, "XAuth [6]", "SSL-XIoMT [8]"]
     for scheme in draw_order:
         scheme_rows = by_scheme[scheme]
         points = []
         for row in scheme_rows:
             n = int(row["n_requests"])
-            cost = float(row["authorization_verification_cost"])
+            cost = float(row["authorization_verification_cost_ms"])
             points.append((x_pos(n, left, plot_w), y_pos_log(cost, top, plot_h, y_min, y_max)))
         point_str = " ".join(f"{x:.1f},{y:.1f}" for x, y in points)
         scheme_style = style[scheme]
@@ -218,33 +263,27 @@ def write_svg(rows: list[dict[str, float | str]]) -> None:
             f'  <polyline points="{point_str}" fill="none" stroke="{scheme_style["color"]}" '
             f'stroke-width="2.5"{dash_attr} stroke-linecap="round" stroke-linejoin="round"/>'
         )
-        for x, y in points:
-            parts.append(marker_svg(str(scheme_style["marker"]), x, y, str(scheme_style["color"])))
 
-    legend_x = left
-    legend_y = top + plot_h + 85
-    legend_w = plot_w
-    legend_h = 45
+    legend_x = left + plot_w + 38
+    legend_y = top + 34
 
     legend_rows = [
         "SCAPE-ZK",
-        "Scheme [30]",
+        IIOT_SSI_NAME,
         "XAuth [6]",
         "SSL-XIoMT [8]",
     ]
     for idx, scheme in enumerate(legend_rows):
-        # 2x2 layout
-        lx = legend_x + (idx % 2) * (legend_w / 2)
-        ly = legend_y + (idx // 2) * 22
+        lx = legend_x
+        ly = legend_y + idx * 28
         scheme_style = style[scheme]
         dash_attr = f' stroke-dasharray="{scheme_style["dash"]}"' if scheme_style["dash"] else ""
         parts.append(
-            f'  <line x1="{lx}" y1="{ly}" x2="{lx + 32}" y2="{ly}" stroke="{scheme_style["color"]}" '
+            f'  <line x1="{lx}" y1="{ly}" x2="{lx + 34}" y2="{ly}" stroke="{scheme_style["color"]}" '
             f'stroke-width="2.5"{dash_attr} stroke-linecap="round"/>'
         )
-        parts.append(marker_svg(str(scheme_style["marker"]), lx + 16, ly, str(scheme_style["color"])))
         parts.append(
-            f'  <text x="{lx + 42}" y="{ly + 4}" class="legend">{escape(str(scheme_style["label"]))}</text>'
+            f'  <text x="{lx + 44}" y="{ly + 4}" class="legend">{escape(str(scheme_style["label"]))}</text>'
         )
 
     parts.append("</svg>")

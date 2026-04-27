@@ -7,7 +7,7 @@ timings claimed in those papers.
 
     XAuth [6]      off-chain: n*(T_zk^v + T_merk(n))        on-chain: n * T_hash
     SSL-XIoMT [8]  off-chain: n*(T_zk^v + T_merk(n))        on-chain: n * T_hash
-    Scheme [30]    off-chain: n*T_zk^v + T_pair + n*T_grp   on-chain: n * T_hash
+    IIoT SSI [30]  off-chain: n*T_zk^v + T_pair + n*T_grp   on-chain: n * T_hash
     SCAPE-ZK       off-chain: n * T_zk^v                    on-chain: T_pair
 
 Primitive sources:
@@ -47,12 +47,17 @@ OUT_BREAKDOWN_SVG = HERE / "table_v_cost_breakdown_100req.svg"
 OUT_COMPONENT_SVG = HERE / "table_v_onchain_offchain_100req.svg"
 
 LOADS = [1, 10, 50, 100, 200]
-SCHEMES = ["XAuth [6]", "SSL-XIoMT [8]", "Scheme [30]", "SCAPE-ZK"]
+IIOT_SSI_NAME = (
+    "Cross-Domain Identity Authentication Scheme for the IIoT Identification "
+    "Resolution System Based on Self-Sovereign Identity [30]"
+)
+IIOT_SSI_LABEL = "IIoT SSI [30]"
+SCHEMES = ["XAuth [6]", "SSL-XIoMT [8]", IIOT_SSI_NAME, "SCAPE-ZK"]
 
 COLORS = {
     "XAuth [6]": "#455A64",
     "SSL-XIoMT [8]": "#007C89",
-    "Scheme [30]": "#C4932F",
+    IIOT_SSI_NAME: "#C4932F",
     "SCAPE-ZK": "#C2185B",
     "offchain": "#007C89",
     "onchain": "#D95F43",
@@ -143,7 +148,7 @@ def cost_rows() -> tuple[list[dict[str, float | int | str]], dict[str, float]]:
             if scheme in {"XAuth [6]", "SSL-XIoMT [8]"}:
                 offchain = n * (t_zk_v + merk)
                 offchain_formula = "n*(T_zk^v + ceil(log2 n)*T_hash)"
-            elif scheme == "Scheme [30]":
+            elif scheme == IIOT_SSI_NAME:
                 offchain = (n * t_zk_v) + t_pair + (n * t_grp)
                 offchain_formula = "n*T_zk^v + T_pair + n*T_grp"
             else:
@@ -161,6 +166,7 @@ def cost_rows() -> tuple[list[dict[str, float | int | str]], dict[str, float]]:
                 {
                     "n_requests": n,
                     "scheme": scheme,
+                    "basis": "formula_derived",
                     "offchain_formula": offchain_formula,
                     "onchain_formula": onchain_formula,
                     "offchain_ms": offchain,
@@ -168,6 +174,9 @@ def cost_rows() -> tuple[list[dict[str, float | int | str]], dict[str, float]]:
                     "total_ms": offchain + onchain,
                     "T_merk_ms": merk,
                     **primitives,
+                    "source_file": "results/groth16_bench.csv; results/bls_bench.csv; local SHA-256 calibration",
+                    "source_filter_or_formula": f"offchain={offchain_formula}; onchain={onchain_formula}; T_merk(n)=ceil(log2(max(n,2)))*T_hash",
+                    "notes": "Formula-derived authorization-verification slice estimator; not a full integrated baseline benchmark.",
                 }
             )
     return rows, primitives
@@ -177,6 +186,7 @@ def write_cost_csv(rows: list[dict[str, float | int | str]]) -> None:
     fieldnames = [
         "n_requests",
         "scheme",
+        "basis",
         "offchain_formula",
         "onchain_formula",
         "offchain_ms",
@@ -187,6 +197,9 @@ def write_cost_csv(rows: list[dict[str, float | int | str]]) -> None:
         "T_grp_ms",
         "T_hash_ms",
         "T_merk_ms",
+        "source_file",
+        "source_filter_or_formula",
+        "notes",
     ]
     with OUT_CSV.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=fieldnames)
@@ -282,7 +295,7 @@ def draw_total_cost(rows: list[dict[str, float | int | str]], primitives: dict[s
     by_scheme: dict[str, list[dict[str, float | int | str]]] = {scheme: [] for scheme in SCHEMES}
     for row in rows:
         by_scheme[str(row["scheme"])].append(row)
-    dash = {"XAuth [6]": "6 4", "SSL-XIoMT [8]": "", "Scheme [30]": "3 3", "SCAPE-ZK": ""}
+    dash = {"XAuth [6]": "6 4", "SSL-XIoMT [8]": "", IIOT_SSI_NAME: "3 3", "SCAPE-ZK": ""}
     for scheme, scheme_rows in by_scheme.items():
         points = " ".join(
             f'{x_pos(int(row["n_requests"]), margin_left, plot_w):.1f},{y_pos_log(float(row["total_ms"]), margin_top, plot_h, y_min, y_max):.1f}'
@@ -301,7 +314,8 @@ def draw_total_cost(rows: list[dict[str, float | int | str]], primitives: dict[s
         dash_attr = f' stroke-dasharray="{dash[scheme]}"' if dash[scheme] else ""
         parts.append(f'  <line x1="{x}" y1="{legend_y}" x2="{x + 28}" y2="{legend_y}" stroke="{COLORS[scheme]}" stroke-width="3"{dash_attr}/>')
         parts.append(f'  <circle cx="{x + 14}" cy="{legend_y}" r="4" fill="{COLORS[scheme]}"/>')
-        parts.append(f'  <text x="{x + 38}" y="{legend_y + 4}" class="legend">{escape(scheme)}</text>')
+        label = IIOT_SSI_LABEL if scheme == IIOT_SSI_NAME else scheme
+        parts.append(f'  <text x="{x + 38}" y="{legend_y + 4}" class="legend">{escape(label)}</text>')
 
     primitive_note = (
         f'T_zk^v={primitives["T_zk_v_ms"]:.2f} ms, '
@@ -358,7 +372,8 @@ def draw_breakdown(rows: list[dict[str, float | int | str]]) -> None:
         else:
             parts.append(f'  <line x1="{x:.1f}" y1="{y_off:.1f}" x2="{x + bar_w:.1f}" y2="{y_off:.1f}" stroke="{COLORS["onchain"]}" stroke-width="2"/>')
         parts.append(f'  <text x="{cx:.1f}" y="{y_on - 8:.1f}" text-anchor="middle" class="value">{fmt(float(row["total_ms"]))}</text>')
-        parts.append(f'  <text x="{cx:.1f}" y="{margin_top + plot_h + 25}" text-anchor="middle" class="label">{escape(str(row["scheme"]))}</text>')
+        label = IIOT_SSI_LABEL if row["scheme"] == IIOT_SSI_NAME else str(row["scheme"])
+        parts.append(f'  <text x="{cx:.1f}" y="{margin_top + plot_h + 25}" text-anchor="middle" class="label">{escape(label)}</text>')
 
     legend_y = height - 34
     parts.append(f'  <rect x="{margin_left}" y="{legend_y - 11}" width="13" height="13" rx="2" fill="{COLORS["offchain"]}"/>')
@@ -423,7 +438,7 @@ def draw_component_comparison(rows: list[dict[str, float | int | str]]) -> None:
             parts.append(f'  <text x="{x + bar_w / 2:.1f}" y="{margin_top + plot_h + 22}" text-anchor="middle" class="axis">{label}</text>')
 
         parts.append(
-            f'  <text x="{group_x + group_w / 2:.1f}" y="{margin_top + plot_h + 48}" text-anchor="middle" class="label">{escape(str(row["scheme"]))}</text>'
+            f'  <text x="{group_x + group_w / 2:.1f}" y="{margin_top + plot_h + 48}" text-anchor="middle" class="label">{escape(IIOT_SSI_LABEL if row["scheme"] == IIOT_SSI_NAME else str(row["scheme"]))}</text>'
         )
 
     legend_y = height - 34
@@ -460,7 +475,7 @@ Formula mapping used:
 
 - XAuth [6]: off-chain `n*(T_zk^v + ceil(log2 n)*T_hash)` from anonymous-proof verification plus MMHT correctness validation; on-chain `n*T_hash` from control-layer hash anchoring.
 - SSL-XIoMT [8]: off-chain `n*(T_zk^v + ceil(log2 n)*T_hash)` from `ver_merkle_proof(...)` and `_ZKP_valid(...)` / `check_ZKP_validity(...)`; on-chain `n*T_hash` from Hyperledger Merkle-root anchoring.
-- Scheme [30]: off-chain `n*T_zk^v + T_pair + n*T_grp` from verifier-side proof checks plus batch pairing equation (5)/(6); on-chain `n*T_hash` from blockchain authentication-record anchoring.
+- Cross-Domain Identity Authentication Scheme for the IIoT Identification Resolution System Based on Self-Sovereign Identity [30]: off-chain `n*T_zk^v + T_pair + n*T_grp` from verifier-side proof checks plus batch pairing equation (5)/(6); on-chain `n*T_hash` from blockchain authentication-record anchoring.
 - SCAPE-ZK: off-chain `n*T_zk^v`; on-chain `T_pair`.
 
 Scope note:

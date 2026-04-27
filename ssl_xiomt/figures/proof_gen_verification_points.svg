@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620">
+<style>
+.title { font: 700 28px Georgia, serif; fill: #1b2a41; }
+.subtitle { font: 400 16px Georgia, serif; fill: #465362; }
+.axis { font: 500 14px 'Courier New', monospace; fill: #334; }
+.label { font: 600 16px Georgia, serif; fill: #223; }
+.value { font: 700 16px 'Courier New', monospace; fill: #102a43; }
+.note { font: 400 15px Georgia, serif; fill: #4f5d75; }
+.small { font: 400 13px Georgia, serif; fill: #4f5d75; }
+.grid { stroke: #d9e2ec; stroke-width: 1; }
+</style>
+<text x="60" y="60" class="title" text-anchor="start">Proof Gen. + Verification Time</text>
+<text x="60" y="88" class="subtitle" text-anchor="start">Only values explicitly stated in the paper text are plotted</text>
+<line x1="120" y1="500.0" x2="860" y2="500.0" class="grid"/>
+<text x="105" y="505" class="axis" text-anchor="end">0</text>
+<line x1="120" y1="438.73252919777906" x2="860" y2="438.73252919777906" class="grid"/>
+<text x="105" y="443" class="axis" text-anchor="end">100</text>
+<line x1="120" y1="377.4650583955581" x2="860" y2="377.4650583955581" class="grid"/>
+<text x="105" y="382" class="axis" text-anchor="end">200</text>
+<line x1="120" y1="316.1975875933371" x2="860" y2="316.1975875933371" class="grid"/>
+<text x="105" y="321" class="axis" text-anchor="end">300</text>
+<line x1="120" y1="254.9301167911162" x2="860" y2="254.9301167911162" class="grid"/>
+<text x="105" y="259" class="axis" text-anchor="end">400</text>
+<line x1="120" y1="193.66264598889524" x2="860" y2="193.66264598889524" class="grid"/>
+<text x="105" y="198" class="axis" text-anchor="end">500</text>
+<rect x="130" y="180.0" width="180" height="320.0" fill="#9f1239" rx="8"/>
+<text x="220.0" y="530" class="label" text-anchor="middle">Scheme [31]</text>
+<text x="220.0" y="170" class="value" text-anchor="middle">522.3 s</text>
+<rect x="400" y="432.78958452996363" width="180" height="67.21041547003638" fill="#d97706" rx="8"/>
+<text x="490.0" y="530" class="label" text-anchor="middle">Scheme [29]</text>
+<text x="490.0" y="422" class="value" text-anchor="middle">109.7 s</text>
+<rect x="670" y="452.9465824238943" width="180" height="4.533792839364345" fill="#0f766e" rx="8"/>
+<rect x="670" y="457.4803752632587" width="180" height="42.51962473674134" fill="#14b8a6" rx="8" opacity="0.35"/>
+<text x="760.0" y="530" class="label" text-anchor="middle">SSL-XIoMT</text>
+<text x="760.0" y="442" class="value" text-anchor="middle">69.4-76.8 s</text>
+<text x="60" y="575" class="note" text-anchor="start">Scope in paper: &lt;= 1000 proofs</text>
+</svg>

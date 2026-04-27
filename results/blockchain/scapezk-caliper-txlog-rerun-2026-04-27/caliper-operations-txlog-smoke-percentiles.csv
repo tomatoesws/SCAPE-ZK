@@ -1,0 +1,16 @@
+trial,name,succ,avg_latency_ms,p50_latency_ms,p95_latency_ms,p99_latency_ms,min_latency_ms,max_latency_ms,source_log
+1,register-100tx,100,279.86,110,855,1655,38,1665,caliper-operations-txlog-smoke.log
+1,register-500tx,500,150.678,126,219,896,43,1675,caliper-operations-txlog-smoke.log
+1,register-1000tx,1000,140.681,120,263,354,29,1703,caliper-operations-txlog-smoke.log
+1,verifyproof-100tx,100,230.38,90,832,1640,29,1655,caliper-operations-txlog-smoke.log
+1,verifyproof-500tx,500,137.276,110,230,855,33,1693,caliper-operations-txlog-smoke.log
+1,verifyproof-1000tx,1000,119.293,103,197,264,30,1671,caliper-operations-txlog-smoke.log
+1,revoke-100tx,100,237.67,76,845,1651,27,1655,caliper-operations-txlog-smoke.log
+1,revoke-500tx,500,134.46,104,226,859,36,1662,caliper-operations-txlog-smoke.log
+1,revoke-1000tx,1000,128.023,110,206,328,32,1668,caliper-operations-txlog-smoke.log
+1,updatecred-100tx,100,275.34,73,897,1649,29,1683,caliper-operations-txlog-smoke.log
+1,updatecred-500tx,500,128.534,100,204,842,30,1673,caliper-operations-txlog-smoke.log
+1,updatecred-1000tx,1000,136.876,116,256,384,27,1706,caliper-operations-txlog-smoke.log
+1,recordexists-100tx,100,7.37,6,14,26,3,33,caliper-operations-txlog-smoke.log
+1,recordexists-500tx,500,7.984,7,17,23,2,31,caliper-operations-txlog-smoke.log
+1,recordexists-1000tx,1000,9.111,7,22,41,2,61,caliper-operations-txlog-smoke.log

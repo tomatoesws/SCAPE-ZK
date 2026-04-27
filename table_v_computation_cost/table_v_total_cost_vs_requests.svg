@@ -73,9 +73,9 @@
   <text x="341" y="598" class="legend">SSL-XIoMT [8]</text>
   <line x1="518" y1="594" x2="546" y2="594" stroke="#C4932F" stroke-width="3" stroke-dasharray="3 3"/>
   <circle cx="532" cy="594" r="4" fill="#C4932F"/>
-  <text x="556" y="598" class="legend">Scheme [30]</text>
+  <text x="556" y="598" class="legend">IIoT SSI [30]</text>
   <line x1="733" y1="594" x2="761" y2="594" stroke="#C2185B" stroke-width="3"/>
   <circle cx="747" cy="594" r="4" fill="#C2185B"/>
   <text x="771" y="598" class="legend">SCAPE-ZK</text>
-  <text x="88" y="542" class="subtitle">T_zk^v=12.47 ms, T_pair=31.93 ms, T_grp=5.451 ms, T_hash=0.000446 ms</text>
+  <text x="88" y="542" class="subtitle">T_zk^v=12.47 ms, T_pair=31.93 ms, T_grp=5.451 ms, T_hash=0.000660 ms</text>
 </svg>
