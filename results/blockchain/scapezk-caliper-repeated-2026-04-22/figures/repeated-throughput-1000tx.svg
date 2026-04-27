@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="940" height="570" viewBox="0 0 940 570" role="img">
+  <rect width="100%" height="100%" fill="#FFFFFF"/>
+  <style>
+    text { font-family: Arial, Helvetica, sans-serif; fill: #222831; }
+    .title { font-size: 22px; font-weight: 700; }
+    .subtitle { font-size: 13px; fill: #66707A; }
+    .axis { font-size: 12px; fill: #66707A; }
+    .label { font-size: 12px; fill: #222831; }
+    .value { font-size: 12px; font-weight: 700; fill: #222831; }
+    .legend { font-size: 12px; fill: #222831; }
+    .grid { stroke: #D8DDE3; stroke-width: 1; }
+    .axis-line { stroke: #9AA3AD; stroke-width: 1; }
+    .error { stroke: #222831; stroke-width: 1.5; }
+  </style>
+  <text x="90" y="38" class="title">SCAPE-ZK Operation Throughput at 1000 Transactions</text>
+  <text x="90" y="60" class="subtitle">Hyperledger Fabric 4-peer network; n=10 Caliper trials</text>
+  <text x="24" y="282.0" class="axis" transform="rotate(-90 24 282.0)">Throughput (TPS)</text>
+  <line x1="90" y1="472.0" x2="895" y2="472.0" class="grid"/>
+  <text x="78" y="476.0" text-anchor="end" class="axis">0.00</text>
+  <line x1="90" y1="396.0" x2="895" y2="396.0" class="grid"/>
+  <text x="78" y="400.0" text-anchor="end" class="axis">175</text>
+  <line x1="90" y1="320.0" x2="895" y2="320.0" class="grid"/>
+  <text x="78" y="324.0" text-anchor="end" class="axis">350</text>
+  <line x1="90" y1="244.0" x2="895" y2="244.0" class="grid"/>
+  <text x="78" y="248.0" text-anchor="end" class="axis">525</text>
+  <line x1="90" y1="168.0" x2="895" y2="168.0" class="grid"/>
+  <text x="78" y="172.0" text-anchor="end" class="axis">700</text>
+  <line x1="90" y1="92.0" x2="895" y2="92.0" class="grid"/>
+  <text x="78" y="96.0" text-anchor="end" class="axis">875</text>
+  <line x1="90" y1="472" x2="895" y2="472" class="axis-line"/>
+  <line x1="90" y1="92" x2="90" y2="472" class="axis-line"/>
+  <rect x="118.0" y="378.5" width="127.4" height="93.5" rx="3" fill="#007C89"/>
+  <line x1="181.7" y1="372.3" x2="181.7" y2="384.7" class="error"/>
+  <line x1="173.7" y1="372.3" x2="189.7" y2="372.3" class="error"/>
+  <line x1="173.7" y1="384.7" x2="189.7" y2="384.7" class="error"/>
+  <text x="181.7" y="364.3" text-anchor="middle" class="value">215</text>
+  <text x="181.7" y="496" text-anchor="middle" class="label">Register</text>
+  <rect x="273.4" y="375.9" width="127.4" height="96.1" rx="3" fill="#007C89"/>
+  <line x1="337.1" y1="372.4" x2="337.1" y2="379.4" class="error"/>
+  <line x1="329.1" y1="372.4" x2="345.1" y2="372.4" class="error"/>
+  <line x1="329.1" y1="379.4" x2="345.1" y2="379.4" class="error"/>
+  <text x="337.1" y="364.4" text-anchor="middle" class="value">221</text>
+  <text x="337.1" y="496" text-anchor="middle" class="label">VerifyProof</text>
+  <rect x="428.8" y="375.9" width="127.4" height="96.1" rx="3" fill="#007C89"/>
+  <line x1="492.5" y1="370.0" x2="492.5" y2="381.8" class="error"/>
+  <line x1="484.5" y1="370.0" x2="500.5" y2="370.0" class="error"/>
+  <line x1="484.5" y1="381.8" x2="500.5" y2="381.8" class="error"/>
+  <text x="492.5" y="362.0" text-anchor="middle" class="value">221</text>
+  <text x="492.5" y="496" text-anchor="middle" class="label">Revoke</text>
+  <rect x="584.2" y="375.7" width="127.4" height="96.3" rx="3" fill="#007C89"/>
+  <line x1="647.9" y1="371.2" x2="647.9" y2="380.3" class="error"/>
+  <line x1="639.9" y1="371.2" x2="655.9" y2="371.2" class="error"/>
+  <line x1="639.9" y1="380.3" x2="655.9" y2="380.3" class="error"/>
+  <text x="647.9" y="363.2" text-anchor="middle" class="value">222</text>
+  <text x="647.9" y="496" text-anchor="middle" class="label">UpdateCred</text>
+  <rect x="739.6" y="166.8" width="127.4" height="305.2" rx="3" fill="#007C89"/>
+  <line x1="803.3" y1="150.0" x2="803.3" y2="183.7" class="error"/>
+  <line x1="795.3" y1="150.0" x2="811.3" y2="150.0" class="error"/>
+  <line x1="795.3" y1="183.7" x2="811.3" y2="183.7" class="error"/>
+  <text x="803.3" y="142.0" text-anchor="middle" class="value">702</text>
+  <text x="803.3" y="496" text-anchor="middle" class="label">RecordExists</text>
+  <text x="90" y="546" class="legend">Error bars show sample SD across 10 logged Caliper trials.</text>
+</svg>

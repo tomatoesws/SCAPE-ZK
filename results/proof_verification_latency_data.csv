@@ -1,0 +1,13 @@
+scheme,concurrent_requests,latency_ms,basis
+SCAPE-ZK (Ours),1,13.293,T_zk^v; latest request verify mean from results/groth16_bench.csv
+SCAPE-ZK (Ours),10,13.293,T_zk^v; latest request verify mean from results/groth16_bench.csv
+SCAPE-ZK (Ours),50,13.293,T_zk^v; latest request verify mean from results/groth16_bench.csv
+SCAPE-ZK (Ours),100,13.293,T_zk^v; latest request verify mean from results/groth16_bench.csv
+SCAPE-ZK (Ours),200,13.293,T_zk^v; latest request verify mean from results/groth16_bench.csv
+SCAPE-ZK (Ours),500,13.293,T_zk^v; latest request verify mean from results/groth16_bench.csv
+Scheme [26],1,28.474366,"T_zk^v + T_pair + n*T_grp; Table IV in SCAPE_ZK.pdf, primitives from results/primitive_microbench.csv"
+Scheme [26],10,32.586052,"T_zk^v + T_pair + n*T_grp; Table IV in SCAPE_ZK.pdf, primitives from results/primitive_microbench.csv"
+Scheme [26],50,50.860212,"T_zk^v + T_pair + n*T_grp; Table IV in SCAPE_ZK.pdf, primitives from results/primitive_microbench.csv"
+Scheme [26],100,73.702912,"T_zk^v + T_pair + n*T_grp; Table IV in SCAPE_ZK.pdf, primitives from results/primitive_microbench.csv"
+Scheme [26],200,119.388312,"T_zk^v + T_pair + n*T_grp; Table IV in SCAPE_ZK.pdf, primitives from results/primitive_microbench.csv"
+Scheme [26],500,256.444512,"T_zk^v + T_pair + n*T_grp; Table IV in SCAPE_ZK.pdf, primitives from results/primitive_microbench.csv"

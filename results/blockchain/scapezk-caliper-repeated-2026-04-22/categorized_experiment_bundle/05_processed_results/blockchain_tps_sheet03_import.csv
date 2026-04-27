@@ -1,0 +1,16 @@
+operation,load_tx,trials,success_total,fail_total,throughput_tps_mean,throughput_tps_sd,avg_latency_ms_mean,avg_latency_ms_sd,source_round,source_file,include_in_locked_write_template
+Register,100,10,1000,0,19.34,3.26,276,64,register-100tx,caliper-operations-repeated-summary.csv,yes
+Register,500,10,5000,0,131.33,2.51,95,7,register-500tx,caliper-operations-repeated-summary.csv,yes
+Register,1000,10,10000,0,215.15,14.24,89,12,register-1000tx,caliper-operations-repeated-summary.csv,yes
+VerifyProof,100,10,1000,0,20.07,3.30,266,49,verifyproof-100tx,caliper-operations-repeated-summary.csv,yes
+VerifyProof,500,10,5000,0,130.99,4.93,82,4,verifyproof-500tx,caliper-operations-repeated-summary.csv,yes
+VerifyProof,1000,10,10000,0,221.19,8.03,87,7,verifyproof-1000tx,caliper-operations-repeated-summary.csv,yes
+Revoke,100,10,1000,0,19.87,3.03,266,61,revoke-100tx,caliper-operations-repeated-summary.csv,yes
+Revoke,500,10,5000,0,130.83,4.76,86,8,revoke-500tx,caliper-operations-repeated-summary.csv,yes
+Revoke,1000,10,10000,0,221.20,13.61,86,8,revoke-1000tx,caliper-operations-repeated-summary.csv,yes
+UpdateCred,100,10,1000,0,20.28,1.49,262,30,updatecred-100tx,caliper-operations-repeated-summary.csv,yes
+UpdateCred,500,10,5000,0,131.65,5.06,84,5,updatecred-500tx,caliper-operations-repeated-summary.csv,yes
+UpdateCred,1000,10,10000,0,221.56,10.47,92,8,updatecred-1000tx,caliper-operations-repeated-summary.csv,yes
+RecordExists,100,10,1000,0,112.98,1.41,9,3,recordexists-100tx,caliper-operations-repeated-summary.csv,no
+RecordExists,500,10,5000,0,447.05,15.10,10,0,recordexists-500tx,caliper-operations-repeated-summary.csv,no
+RecordExists,1000,10,10000,0,702.38,38.86,10,0,recordexists-1000tx,caliper-operations-repeated-summary.csv,no

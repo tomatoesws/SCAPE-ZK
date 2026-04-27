@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620">
+<style>
+.title { font: 700 28px Georgia, serif; fill: #1b2a41; }
+.subtitle { font: 400 16px Georgia, serif; fill: #465362; }
+.axis { font: 500 14px 'Courier New', monospace; fill: #334; }
+.label { font: 600 16px Georgia, serif; fill: #223; }
+.value { font: 700 16px 'Courier New', monospace; fill: #102a43; }
+.note { font: 400 15px Georgia, serif; fill: #4f5d75; }
+.small { font: 400 13px Georgia, serif; fill: #4f5d75; }
+.grid { stroke: #d9e2ec; stroke-width: 1; }
+</style>
+<text x="60" y="70" class="title" text-anchor="start">Secure Cross-Domain Transmission</text>
+<text x="60" y="100" class="subtitle" text-anchor="start">The paper text does not expose Table 3 cell values in extractable form</text>
+<rect x="80" y="150" width="840" height="250" rx="18" fill="#f0f9ff" stroke="#7dd3fc" stroke-width="2"/>
+<text x="500" y="250" class="title" text-anchor="middle">All compared schemes completed the end-to-end process in under 0.1 seconds.</text>
+<text x="500" y="305" class="note" text-anchor="middle">This figure intentionally avoids invented per-step or per-scheme timings.</text>
+<text x="500" y="352" class="note" text-anchor="middle">Missing Table 3 cells require manual transcription or OCR from the PDF page.</text>
+</svg>

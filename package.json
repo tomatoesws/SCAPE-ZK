@@ -1,0 +1,21 @@
+{
+  "name": "scape-zk",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "bench:primitives": "node scripts/bench_primitives.js",
+    "compare:artifacts": "bash -lc 'MPLCONFIGDIR=/tmp/matplotlib ./.venv/bin/python scripts/plot_offchain_system_winning_graphs.py && MPLCONFIGDIR=/tmp/matplotlib ./.venv/bin/python scripts/plot_proof_verification_comparison.py && MPLCONFIGDIR=/tmp/matplotlib ./.venv/bin/python scripts/plot_integrity_verification_latency.py'",
+    "gen:inputs": "node scripts/gen_inputs.js",
+    "test": "node scripts/gen_inputs.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@noble/curves": "^2.2.0",
+    "circomlib": "^2.0.5",
+    "circomlibjs": "^0.1.7",
+    "snarkjs": "^0.7.6"
+  },
+  "description": ""
+}

@@ -1,0 +1,15 @@
+graph,scheme,file_size_mb,latency_ms,basis
+cross_domain_delegation,Traditional Re-encryption,1,6.6609141759999995,mb*1024*(Tsym_dec_1KB + Tsym_enc_1KB)
+cross_domain_delegation,Traditional Re-encryption,10,66.60914176,mb*1024*(Tsym_dec_1KB + Tsym_enc_1KB)
+cross_domain_delegation,Traditional Re-encryption,20,133.21828352,mb*1024*(Tsym_dec_1KB + Tsym_enc_1KB)
+cross_domain_delegation,Traditional Re-encryption,50,333.0457088,mb*1024*(Tsym_dec_1KB + Tsym_enc_1KB)
+cross_domain_delegation,Traditional Re-encryption,100,666.0914176,mb*1024*(Tsym_dec_1KB + Tsym_enc_1KB)
+cross_domain_delegation,Traditional Re-encryption,150,999.1371263999999,mb*1024*(Tsym_dec_1KB + Tsym_enc_1KB)
+cross_domain_delegation,Traditional Re-encryption,200,1332.1828352,mb*1024*(Tsym_dec_1KB + Tsym_enc_1KB)
+cross_domain_delegation,SCAPE-ZK (Ours),1,0.6134,latest measured PRE re_encrypt mean from results/pre_bench.csv
+cross_domain_delegation,SCAPE-ZK (Ours),10,0.6134,latest measured PRE re_encrypt mean from results/pre_bench.csv
+cross_domain_delegation,SCAPE-ZK (Ours),20,0.6134,latest measured PRE re_encrypt mean from results/pre_bench.csv
+cross_domain_delegation,SCAPE-ZK (Ours),50,0.6134,latest measured PRE re_encrypt mean from results/pre_bench.csv
+cross_domain_delegation,SCAPE-ZK (Ours),100,0.6134,latest measured PRE re_encrypt mean from results/pre_bench.csv
+cross_domain_delegation,SCAPE-ZK (Ours),150,0.6134,latest measured PRE re_encrypt mean from results/pre_bench.csv
+cross_domain_delegation,SCAPE-ZK (Ours),200,0.6134,latest measured PRE re_encrypt mean from results/pre_bench.csv

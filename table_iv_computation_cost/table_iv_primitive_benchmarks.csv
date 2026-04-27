@@ -1,0 +1,17 @@
+primitive,mean_ms,source
+T_zk_g_Cid_ms,125.71985714285715,groth16_bench.csv request prove proxy
+T_zk_g_Cattr_ms,910.106,groth16_bench.csv session_n_attrs prove proxy
+T_zk_g_generic_ms,125.71985714285715,groth16_bench.csv request prove proxy
+T_zk_g_Creq_ms,125.71985714285715,groth16_bench.csv request prove
+T_zk_g_Csess_ms,529.6437142857143,groth16_bench.csv session prove
+T_zk_v_ms,12.470571428571429,groth16_bench.csv request verify
+T_sym_enc_ms,0.0017,cpabe_bench.csv sym_encrypt_1KB
+T_abe_enc_ms,117.5695,cpabe_bench.csv cpabe_encrypt
+T_ecc_enc_ms,0.11207547799995154,local ECDH or scalar-multiplication proxy
+T_pair_ms,31.92812,bls_bench.csv pairing_only
+T_grp_ms,5.4514774500000005,derived residual from bls_bench.csv verify_agg
+T_hash_ms,0.004488789266666042,local SHA-256 over 8 KiB payload
+T_hash_l_ms,0.00040202169166718703,local SHA-256 over 128 B metadata payload
+T_merk_ms,0.00984034220833981,local Merkle path over 8 KiB leaf
+T_merk_star_ms,0.005581634500003929,local Merkle path over 128 B compact leaf
+T_pre_v_ms,0.0733,pre_bench.csv decrypt_re proxy

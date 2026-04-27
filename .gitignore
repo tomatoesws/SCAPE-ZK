@@ -1,0 +1,29 @@
+ptau/
+keys/*.zkey
+proofs/
+logs/
+results/raw/
+__pycache__/
+*.pyc
+node_modules/
+target/
+.venv/
+
+# Generated Fabric/runtime artifacts
+fabric-samples/
+network/**/node_modules/
+network/**/organizations/peerOrganizations/
+network/**/organizations/ordererOrganizations/
+network/**/channel-artifacts/
+network/**/*.tar.gz
+network/**/*.zip
+network/shared-tls-ca/
+
+# Local binaries and packaged chaincode
+chaincode/**/vendor/
+chaincode/**/scape-zk-chaincode
+*.tar.gz
+
+# Non-program paper/reference files
+docs/
+*.pdf
