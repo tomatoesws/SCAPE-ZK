@@ -6,5 +6,4 @@ The complete project folder is in:
 allcode/
 ```
 
-Open `allcode/README.md` for setup steps, project layout, checks, benchmark
-commands, and artifact notes.
+Open `allcode/README.md` for ALL
