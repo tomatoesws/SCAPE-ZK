@@ -1,13 +1,13 @@
 # SCAPE-ZK Program Artifacts
 
-This repository contains the runnable program assets and evaluation artifacts for
-the SCAPE-ZK term project. It is a research prototype for privacy-preserving
-healthcare data sharing using zero-knowledge circuits, cryptographic
-microbenchmarks, and Hyperledger Fabric chaincode/benchmark configuration.
+This repository contains the runnable code and evaluation files for the SCAPE-ZK
+term project. SCAPE-ZK is a research prototype for privacy-preserving healthcare
+data sharing. It uses zero-knowledge circuits, cryptographic benchmarks, and
+Hyperledger Fabric chaincode and benchmark settings.
 
-The repository is intended to let an evaluator inspect the implementation,
-rerun the lightweight checks, regenerate report figures, and review the
-experimental data used in the paper.
+The repository is organized so an evaluator can review the implementation, run
+basic checks, rebuild the report figures, and inspect the data used in the
+paper.
 
 ## Repository Layout
 
@@ -20,14 +20,20 @@ experimental data used in the paper.
 | `network/` | Project-specific Fabric setup scripts, 4-peer test-network assets, compose overlays, cryptogen configs, and Caliper configs. |
 | `results/` | Existing benchmark CSV/JSON data and generated report figures. |
 | `results/blockchain/` | Compact repeated Caliper benchmark bundle for the blockchain-layer evaluation. |
+| `SCAPE_ZK/` | LaTeX source and figures for the SCAPE-ZK paper draft. |
+| `ssl_xiomt/` | Supporting SSL-XIoMT prototype files, metrics code, and figure scripts. |
+| `ssl_xiomt_real_system/` | Real-system diagram and notes for the SSL-XIoMT support material. |
 | `table_v_comparison/` | Corrected Table V on-chain authorization-verification comparison graph and generator. |
+| `table_iv_computation_cost/` | Table IV computation-cost graph generator and outputs. |
 | `table_v_computation_cost/` | Formula-derived Table V computation-cost graph generator and outputs. |
 | `baselines/` | Notes and manifest describing baseline reproduction status. |
 | `docs/` | Experimental setup notes and supporting writeups. |
+| `tests/` | Python tests for the supporting prototype code. |
+| `allcode/` | Flattened code bundle with selected scripts copied into one folder for review. |
 
 ## Prerequisites
 
-Install these tools before running the project:
+Before running the project, make sure these tools are installed:
 
 - Node.js 18+ and `npm`
 - Python 3.10+ with `pip` and `venv`
@@ -35,19 +41,34 @@ Install these tools before running the project:
 - `circom`
 - `snarkjs`
 
-Fabric/Caliper experiments additionally require:
+The Fabric/Caliper experiments also need:
 
 - Docker
 - Hyperledger Fabric binaries and Docker images
 - Hyperledger Caliper dependencies
 
-The `network/` directory stores project-specific Fabric scripts and
-configuration. It does not vendor a complete `fabric-samples` checkout, runtime
-crypto material, `node_modules`, packaged chaincode archives, or local binaries.
+The `network/` directory includes the project-specific Fabric scripts and
+configuration used for the experiments. It does not include a full
+`fabric-samples` checkout, runtime crypto material, `node_modules`, packaged
+chaincode archives, or local binaries.
+
+## Included Files
+
+The main project files are stored in the structured folders above. The root also
+includes `package.json`, `package-lock.json`, and `requirements.txt` for the
+Node.js and Python dependencies.
+
+Several paper PDFs, screenshots, and zipped copies of selected artifact folders
+are included for reference. These files are not required for the basic checks,
+but they help document the project and the evaluation material.
+
+The nested `allcode/` folder is a flattened review bundle. It keeps many source
+files in one place with filenames that show where they came from. The structured
+folders should be used for normal project work.
 
 ## Installation
 
-Clone the repository and enter it:
+Clone the repository and move into it:
 
 ```sh
 git clone <repository-url>
@@ -68,7 +89,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Verify command-line tools:
+Check that the required command-line tools are available:
 
 ```sh
 node -v
@@ -123,8 +144,9 @@ npm run bench:primitives
 
 Some optional Python crypto benchmark scripts, such as `scripts/bench_cpabe.py`
 and `scripts/bench_pre.py`, require Charm-Crypto in addition to
-`requirements.txt`. The tracked CSV results can be used without rerunning those
-optional scripts.
+`requirements.txt`. The CSV results are already included, so these scripts do
+not need to be rerun unless that part of the evaluation needs to be reproduced
+from scratch.
 
 Regenerate the main report figures from the tracked benchmark CSV files:
 
@@ -132,8 +154,8 @@ Regenerate the main report figures from the tracked benchmark CSV files:
 npm run compare:artifacts
 ```
 
-This command expects the Python virtual environment at `.venv/` and writes
-figure outputs under `results/figures/`.
+This command expects the Python virtual environment at `.venv/` and writes the
+figures under `results/figures/`.
 
 Individual plotting scripts can also be run directly:
 
@@ -145,13 +167,13 @@ python3 scripts/plot_integrity_verification_latency.py
 
 ## Hyperledger Fabric Assets
 
-The chaincode implementation is in:
+The chaincode implementation is here:
 
 ```text
 chaincode/scape-zk/scape_zk.go
 ```
 
-The local chaincode performance test is:
+The local chaincode performance test is here:
 
 ```text
 chaincode/scape-zk/perf_test.go
@@ -164,14 +186,14 @@ network/fabric-test-network/
 network/scripts/
 ```
 
-These files document the project-specific setup used for the blockchain-layer
-experiments. To rerun the full Fabric/Caliper experiment on a new machine, first
-install Fabric and Caliper, then place or adapt these assets inside a working
-Fabric test-network environment.
+These files document the setup used for the blockchain-layer experiments. To
+rerun the full Fabric/Caliper experiment on a new machine, install Fabric and
+Caliper first, then place or adapt these files inside a working Fabric
+test-network environment.
 
 ## Report Figures And Data
 
-Tracked result data is stored under `results/`. Main generated figures include:
+Result data is stored under `results/`. The main generated figures are:
 
 - `results/figures/offchain_system/02_authorization_preparation_cost.png`
 - `results/figures/offchain_system/03_cross_domain_delegation_latency.png`
@@ -182,37 +204,37 @@ Tracked result data is stored under `results/`. Main generated figures include:
 - `table_v_computation_cost/table_v_cost_breakdown_100req.svg`
 - `table_v_computation_cost/table_v_onchain_offchain_100req.svg`
 
-The repeated blockchain-layer Caliper benchmark bundle is stored at:
+The repeated blockchain-layer Caliper benchmark bundle is stored here:
 
 ```text
 results/blockchain/scapezk-caliper-repeated-2026-04-22/
 ```
 
-It includes the raw and aggregate CSVs, four generated SVG figures, the figure
-generator, and the Section 7.C/7.D draft text. Trial logs and HTML reports are
-omitted from this compact repository copy.
+It includes raw and summary CSVs, generated figures, figure scripts, workbook
+files, and draft/audit notes. Some Caliper logs and HTML reports are also kept
+inside the categorized experiment bundle for traceability.
 
 ## Scope Notes
 
 This repository contains the SCAPE-ZK prototype code, benchmark scripts, and
-figure-generation artifacts used for the term project. It is not a production
-application and does not provide full faithful implementations of every baseline
-paper. Baseline status and limitations are documented in `baselines/README.md`.
+figure-generation files used for the term project. It is not a production
+application, and it does not include full implementations of every baseline
+paper. Baseline status and limits are documented in `baselines/README.md`.
 
 The Fabric `VerifyProof` benchmark is a blockchain-layer transaction benchmark.
-It records proof-verification/authorization results as ledger operations; it
-does not perform full Groth16 or BLS proof verification inside Fabric chaincode.
+It records proof-verification and authorization results as ledger operations. It
+does not run full Groth16 or BLS proof verification inside Fabric chaincode.
 
 ## Troubleshooting
 
-If `npm test` fails with a missing package such as `circomlibjs`, run:
+If `npm test` fails because a package such as `circomlibjs` is missing, run:
 
 ```sh
 npm install
 ```
 
-If Python plotting scripts fail with missing modules, activate the virtual
-environment and install the plotting dependencies:
+If the Python plotting scripts fail because modules are missing, activate the
+virtual environment and install the plotting dependencies:
 
 ```sh
 source .venv/bin/activate
@@ -232,5 +254,5 @@ If `snarkjs` is not globally available, use the local dependency through `npx`:
 npx snarkjs --help
 ```
 
-If Fabric scripts fail, verify Docker, Fabric binaries, Fabric images, and
+If Fabric scripts fail, check that Docker, Fabric binaries, Fabric images, and
 Caliper dependencies are installed and available on `PATH`.
